@@ -1,0 +1,412 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/5/2016 1:45:15 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a_q_
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2015/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000  43F9 000012AE              9  again          lea     prmpt,a1
+00001006  4EB9 000011E4             10              jsr     p_str
+0000100C  4EB9 000011D8             11              jsr     getnum
+00001012  4EB9 000011F2             12              jsr     p_crlf
+00001018                            13              
+00001018  B27C 0001                 14              cmp     #1,d1
+0000101C  6700 0062                 15              beq     first          empty cluster
+00001020  B27C 0002                 16              cmp     #2,d1
+00001024  6700 0062                 17              beq     second
+00001028  B27C 0003                 18              cmp     #3,d1
+0000102C  6700 0062                 19              beq     third
+00001030  B27C 0004                 20              cmp     #4,d1               ---- wat disk number
+00001034  6700 0062                 21              beq     fourth
+00001038  B27C 0005                 22              cmp     #5,d1                   
+0000103C  6700 0062                 23              beq     fifth
+00001040  B23C 0006                 24              cmp.b   #6,d1
+00001044  6CBA                      25              bge     again
+00001046  6000 0002                 26              bra     tasknumber
+0000104A                            27              
+0000104A                            28              
+0000104A  43F9 000012C2             29  tasknumber     lea      prmpt2,a1
+00001050  4EB9 000011E4             30                  jsr     p_str
+00001056  4EB9 000011D8             31                  jsr     getnum
+0000105C  4EB9 000011F2             32                  jsr     p_crlf
+00001062  B27C 0001                 33              cmp     #1,d1
+00001066  6700 0040                 34              beq     sr1          empty cluster
+0000106A  B27C 0002                 35              cmp     #2,d1
+0000106E  6700 00C4                 36              beq     sr2
+00001072                            37              
+00001072                            38              
+00001072                            39              
+00001072                            40              
+00001072  B27C 0003                 41              cmp     #3,d1
+00001076  6700 0004                 42              beq     stopping
+0000107A  6084                      43              bra     again
+0000107C                            44               
+0000107C                            45              
+0000107C                            46              
+0000107C  4E72 2700                 47  stopping            stop        #$2700  
+00001080                            48  
+00001080  41F9 0000153C             49  first         lea       disk1,a0
+00001086  60C2                      50                bra       tasknumber
+00001088  41F9 0000155C             51  second          lea     disk2,a0
+0000108E  60BA                      52                  bra       tasknumber
+00001090                            53                      
+00001090  41F9 0000157C             54  third         lea       disk3,a0                    ---wat task number
+00001096  60B2                      55                bra       tasknumber
+00001098  41F9 0000159C             56  fourth          lea     disk4,a0
+0000109E  60AA                      57                  bra       tasknumber
+000010A0  41F9 000015BC             58  fifth         lea       disk5,a0
+000010A6  60A2                      59                bra       tasknumber
+000010A8                            60                 
+000010A8                            61  
+000010A8                            62  sr1          
+000010A8  183C 0000                 63              move.b  #0,d4
+000010AC                            64  loop
+000010AC  1218                      65  movetable            move.b  (a0)+,d1
+000010AE                            66              
+000010AE  1E3C 0008                 67  undermove            move.b  #8,d7
+000010B2  1A3C 0080                 68              move.b  #%10000000,d5
+000010B6  BE7C 0000                 69  back        cmp     #0,d7
+000010BA  67F0                      70              beq     movetable               -- use and to see if its empty cluster or not
+000010BC                            71              
+000010BC  1C01                      72              move.b  d1,d6
+000010BE                            73              
+000010BE  CA06                      74              and.b   d6,d5
+000010C0                            75              
+000010C0  BA46                      76              cmp     d6,d5
+000010C2  6D00 0008                 77              blt     yolo
+000010C6  BA46                      78              cmp     d6,d5
+000010C8  6700 0040                 79              beq     endofclusteryolo
+000010CC                            80              
+000010CC  5244                      81  yolo        add     #1,d4
+000010CE                            82             
+000010CE                            83             
+000010CE  E24D                      84              lsr     #1,d5
+000010D0                            85  yoloswag           
+000010D0  51CF FFE4                 86              dbra     d7,back
+000010D4                            87                     
+000010D4                            88  
+000010D4  163C 0000                 89              move.b  #0,d3
+000010D8  4247                      90              clr     d7
+000010DA  6000 0004                 91              bra     endofcluster
+000010DE                            92              
+000010DE                            93              
+000010DE  1218                      94  end            move.b  (a0)+,d1
+000010E0                            95  endofcluster  
+000010E0                            96              
+000010E0  1E3C 0008                 97              move.b  #8,d7
+000010E4  1A3C 0000                 98              move.b  #%00000000,d5
+000010E8  BE7C 0000                 99  back2            cmp     #0,d7
+000010EC  67F0                     100              beq     end                                         ---------- useless part
+000010EE  1C01                     101              move.b  d1,d6
+000010F0  CA06                     102              and.b   d6,d5
+000010F2  BA46                     103              cmp     d6,d5
+000010F4  6700 0008                104              beq        swag
+000010F8  5243                     105              add     #1,d3
+000010FA                           106              
+000010FA  6000 000A                107              bra     endend
+000010FE                           108              
+000010FE                           109  swag        
+000010FE  5243                     110              add     #1,d3
+00001100                           111                 
+00001100  E24D                     112              lsr     #1,d5
+00001102  51CF FFE4                113              dbra     d7,back2
+00001106                           114  
+00001106                           115  endend      
+00001106                           116              
+00001106  6000 FEF8                117              bra     again
+0000110A                           118                
+0000110A                           119              
+0000110A                           120                  
+0000110A                           121              
+0000110A                           122  
+0000110A                           123  
+0000110A                           124  
+0000110A  3E3C 0000                125  endofclusteryolo    move    #0,d7
+0000110E  BA46                     126                      cmp     d6,d5
+00001110  3204                     127                      move      d4,d1
+00001112  43F9 00001293            128                      lea     prmpt3,a1
+00001118  4EB9 000011E4            129                      jsr     p_str                   ---print
+0000111E  4EB9 000011DE            130                      jsr     readnum
+00001124  4EB9 000011F2            131                      jsr     p_crlf
+0000112A  6000 FED4                132                      bra     again
+0000112E  67A0                     133                      beq     yoloswag
+00001130  5244                     134                      add     #1,d4
+00001132  609C                     135                      bra     yoloswag
+00001134                           136                      
+00001134                           137                      
+00001134                           138                      
+00001134                           139                      
+00001134                           140  sr2          
+00001134  183C 0000                141              move.b  #0,d4
+00001138                           142  loop1
+00001138  1218                     143  movetable1            move.b  (a0)+,d1
+0000113A                           144              
+0000113A  1E3C 0008                145  undermove1            move.b  #8,d7
+0000113E  1A3C 0080                146              move.b  #%10000000,d5
+00001142  BE7C 0000                147  back1        cmp     #0,d7
+00001146  67F0                     148              beq     movetable1    --------initiaze using and to see if empty cluster
+00001148                           149              
+00001148  1C01                     150              move.b  d1,d6
+0000114A                           151              
+0000114A  CA06                     152              and.b   d6,d5
+0000114C                           153              
+0000114C  BA46                     154              cmp     d6,d5
+0000114E  6D00 0008                155              blt     yolo1              ---- and cmp to see if empty or not
+00001152  BA46                     156              cmp     d6,d5
+00001154  6700 0016                157              beq     endofcluster1
+00001158                           158              
+00001158  5244                     159  yolo1        add     #1,d4
+0000115A                           160                                                              
+0000115A                           161             
+0000115A  E24D                     162              lsr     #1,d5
+0000115C                           163  yoloswag1           
+0000115C  51CF FFE4                164              dbra     d7,back1
+00001160                           165                     
+00001160                           166  
+00001160  163C 0000                167              move.b  #0,d3
+00001164  4247                     168              clr     d7
+00001166  6000 0004                169              bra     endofcluster1
+0000116A                           170              
+0000116A                           171              
+0000116A  1218                     172  end1            move.b  (a0)+,d1
+0000116C                           173  endofcluster1  
+0000116C                           174              
+0000116C  1E3C 0008                175              move.b  #8,d7
+00001170  1A3C 0000                176              move.b  #%00000000,d5
+00001174  BE7C 0000                177  back21            cmp     #0,d7
+00001178  67F0                     178              beq     end1
+0000117A  1C01                     179              move.b  d1,d6
+0000117C  CA06                     180              and.b   d6,d5
+0000117E  BA46                     181              cmp     d6,d5                                           -check to see set of empty cluster
+00001180  6700 0008                182              beq        swag1
+00001184                           183                         
+00001184  5243                     184              add     #1,d3
+00001186                           185              
+00001186  6000 000A                186              bra     endend1            
+0000118A                           187  swag1        
+0000118A  5243                     188              add     #1,d3                           -keep track of how many clusters in a row are empty
+0000118C                           189  wowoza               
+0000118C  E24D                     190              lsr     #1,d5
+0000118E  51CF FFE4                191              dbra     d7,back21
+00001192                           192  
+00001192                           193  endend1      
+00001192  3203                     194              move       d3,d1
+00001194  43F9 00001317            195              lea     prmpt4,a1
+0000119A  4EB9 000011E4            196              jsr     p_str
+000011A0  4EB9 000011DE            197              jsr     readnum             ----print
+000011A6  4EB9 000011F2            198              jsr     p_crlf
+000011AC  6000 FE52                199              bra     again
+000011B0                           200  
+000011B0  3E3C 0000                201  endofclusteryolo1    move    #0,d7
+000011B4  BA46                     202                      cmp     d6,d5
+000011B6                           203                     
+000011B6  67A4                     204                      beq     yoloswag1
+000011B8  5244                     205                      add     #1,d4
+000011BA  60A0                     206                      bra     yoloswag1
+000011BC                           207  * Put variables and constants here
+000011BC                           208              include     'io_util.x68'
+000011BC  48E7 8000                209  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+000011C0  7012                     210      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+000011C2  4E4F                     211      TRAP    #15
+000011C4  4CDF 0001                212      MOVEM.L (SP)+,D0    Restore D0
+000011C8  4E75                     213      RTS
+000011CA                           214  
+000011CA  48E7 8000                215  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+000011CE  7011                     216      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+000011D0  4E4F                     217      TRAP    #15 Print the number
+000011D2  4CDF 0001                218      MOVEM.L (SP)+,D0    Restore D0
+000011D6  4E75                     219      RTS
+000011D8                           220      
+000011D8                           221      
+000011D8                           222      
+000011D8                           223  GETNUM  
+000011D8  7004                     224      MOVEQ.L #4,D0       
+000011DA  4E4F                     225      TRAP    #15
+000011DC  4E75                     226      RTS
+000011DE                           227  
+000011DE                           228  
+000011DE                           229  readNUM 
+000011DE  7003                     230      MOVEQ.L #3,D0       
+000011E0  4E4F                     231      TRAP    #15
+000011E2  4E75                     232      RTS 
+000011E4  48E7 8000                233  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+000011E8  700D                     234      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+000011EA  4E4F                     235      TRAP    #15 Print the string
+000011EC  4CDF 0001                236      MOVEM.L (SP)+,D0    Restore D0
+000011F0  4E75                     237      RTS
+000011F2                           238  
+000011F2  48E7 8040                239  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+000011F6  700D                     240      MOVEQ.L #13,D0  Set up print with CRLF
+000011F8  43F9 0000126C            241      LEA NULL,A1 Set null string
+000011FE  4E4F                     242      TRAP    #15
+00001200  4CDF 0201                243      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+00001204  4E75                     244      RTS
+00001206                           245  
+00001206  48E7 8000                246  P_STRNR MOVEM.L D0,-(SP)    Preserve D0
+0000120A  700E                     247      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+0000120C  4E4F                     248      TRAP    #15 Print the string
+0000120E  4CDF 0001                249      MOVEM.L (SP)+,D0    Restore D0
+00001212  4E75                     250      RTS
+00001214                           251  
+00001214  48E7 8000                252  P_CHAR  MOVEM.L D0,-(SP)
+00001218  7005                     253      MOVEQ.L #5,D0
+0000121A  4E4F                     254      TRAP    #15
+0000121C  4CDF 0001                255      MOVEM.L (SP)+,D0
+00001220  4E75                     256      RTS
+00001222                           257      
+00001222                           258      
+00001222                           259      
+00001222                           260      
+00001222  48E7 8000                261  P_MSG   MOVEM.L D0,-(SP)    Preserve D0
+00001226  700E                     262      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+00001228  4E4F                     263      TRAP    #15 Print the string
+0000122A  4CDF 0001                264      MOVEM.L (SP)+,D0    Restore D0
+0000122E  4E75                     265      RTS
+00001230                           266  
+00001230  48E7 8000                267  P_RSTR  MOVEM.L D0,-(SP)    Preserve D0
+00001234  7002                     268      MOVEQ   #2,D0   Set up to read string into (A1)
+00001236  4E4F                     269      TRAP    #15 Read the string
+00001238  4CDF 0001                270      MOVEM.L (SP)+,D0    Restore D0
+0000123C  4E75                     271      RTS
+0000123E                           272  
+0000123E  48E7 C000                273  P_ECHO_ON   MOVEM.L D0-D1,-(SP)
+00001242                           274  
+00001242  7201                     275      MOVEQ.L #1,D1
+00001244  700C                     276      MOVEQ.L #12,D0
+00001246  4E4F                     277      TRAP    #15
+00001248                           278  
+00001248  4CDF 0003                279      MOVEM.L (SP)+,D0-D1
+0000124C  4E75                     280      RTS
+0000124E                           281  
+0000124E  48E7 C000                282  P_ECHO_OFF  MOVEM.L D0-D1,-(SP)
+00001252                           283  
+00001252  7200                     284      MOVEQ.L #0,D1
+00001254  700C                     285      MOVEQ.L #12,D0
+00001256  4E4F                     286      TRAP    #15
+00001258                           287  
+00001258  4CDF 0003                288      MOVEM.L (SP)+,D0-D1
+0000125C  4E75                     289      RTS
+0000125E                           290  
+0000125E  48E7 8000                291  P_DCHAR MOVEM.L D0,-(SP)
+00001262                           292  
+00001262  7006                     293      MOVEQ.L #6,D0
+00001264  4E4F                     294      TRAP    #15
+00001266                           295  
+00001266  4CDF 0001                296      MOVEM.L (SP)+,D0
+0000126A  4E75                     297      RTS
+0000126C                           298  
+0000126C= 00                       299  NULL    DC.B    0   * Empty string
+0000126D                           300  
+0000126D                           301  
+0000126D                           302  
+0000126D                           303  
+0000126D                           304  
+0000126D                           305  -------------------- end include --------------------
+0000126D                           306  
+0000126D= 63 68 6F 6F 73 65 ...    307  choosedisk      dc.b    'choose a disk number 1-5 ',0
+00001287= 63 68 6F 6F 73 65 ...    308  choose          dc.b     'choose task',0
+00001293                           309              
+00001293= 74 68 65 20 66 69 ...    310  prmpt3      dc.b    'the first empty cluster is',0            
+000012AE= 65 6E 74 65 72 20 ...    311  prmpt       dc.b    'enter in disk value',0
+000012C2= 65 6E 74 65 72 20 ...    312  prmpt2          dc.b    'enter in task number 1 first first empty cluster 2 for set of cluster 3 to terminate',0
+00001317= 74 68 65 20 66 69 ...    313  prmpt4      dc.b        'the first empty set of clusters is ',0
+0000133B                           314  
+0000133B                           315  listempty        ds.b    256
+0000143B                           316  listfull         ds.b       256
+0000153B                           317  
+0000153B  =00000002                318  row     equ     2
+0000153B  =00000004                319  cols     equ     4
+0000153B  =0000153B                320  Bitmap  EQU    *
+0000153C= FFFFFF00 0FC8FEDF ...    321  Disk1   DC.L   $FFFFFF00,$0FC8FEDF,$00001111,$22223333
+0000154C= FFFFFFFF FFFF000F ...    322          DC.L   $FFFFFFFF,$FFFF000F,$FF000000,$00000000
+0000155C= FFFFFFFF FFFFFF00 ...    323  Disk2   DC.L   $FFFFFFFF,$FFFFFF00,$00000000,$FFFF8000
+0000156C= 0F021234 00004321 ...    324          DC.L   $0F021234,$00004321,$00001111,$22223333
+0000157C= FF800000 00FFFFFF ...    325  Disk3   DC.L   $FF800000,$00FFFFFF,$FFFFFFFF,$22003333
+0000158C= 00000000 F8007FF0 ...    326          DC.L   $00000000,$F8007FF0,$0000AAAA,$FF004660
+0000159C= FFFFFFFF FFFFFFFF ...    327  Disk4   DC.L   $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+000015AC= FFFFFFFF FFFFFFFF ...    328          DC.L   $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+000015BC= 00000000 00000000 ...    329  Disk5   DC.L   $00000000,$00000000,$00000000,$00000000
+000015CC= 00000000 00000000 ...    330          DC.L   $00000000,$00000000,$00000000,$00000000
+000015DC                           331          
+000015DC                           332          
+000015DC                           333          
+000015DC                           334      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+AGAIN               1000
+BACK                10B6
+BACK1               1142
+BACK2               10E8
+BACK21              1174
+BITMAP              153B
+CHOOSE              1287
+CHOOSEDISK          126D
+COLS                4
+DISK1               153C
+DISK2               155C
+DISK3               157C
+DISK4               159C
+DISK5               15BC
+END                 10DE
+END1                116A
+ENDEND              1106
+ENDEND1             1192
+ENDOFCLUSTER        10E0
+ENDOFCLUSTER1       116C
+ENDOFCLUSTERYOLO    110A
+ENDOFCLUSTERYOLO1   11B0
+FIFTH               10A0
+FIRST               1080
+FOURTH              1098
+GETNUM              11D8
+LISTEMPTY           133B
+LISTFULL            143B
+LOOP                10AC
+LOOP1               1138
+MOVETABLE           10AC
+MOVETABLE1          1138
+NULL                126C
+PRMPT               12AE
+PRMPT2              12C2
+PRMPT3              1293
+PRMPT4              1317
+P_CHAR              1214
+P_CRLF              11F2
+P_DCHAR             125E
+P_ECHO_OFF          124E
+P_ECHO_ON           123E
+P_MSG               1222
+P_NUM               11CA
+P_PRMPT             11BC
+P_RSTR              1230
+P_STR               11E4
+P_STRNR             1206
+READNUM             11DE
+ROW                 2
+SECOND              1088
+SR1                 10A8
+SR2                 1134
+START               1000
+STOPPING            107C
+SWAG                10FE
+SWAG1               118A
+TASKNUMBER          104A
+THIRD               1090
+UNDERMOVE           10AE
+UNDERMOVE1          113A
+WOWOZA              118C
+YOLO                10CC
+YOLO1               1158
+YOLOSWAG            10D0
+YOLOSWAG1           115C

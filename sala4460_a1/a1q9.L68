@@ -1,0 +1,52 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/15/2016 4:07:20 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program    : Assignment #1 ASCII test
+00000000                             3  * Written by : Dr. Nora Znotinas
+00000000                             4  * Description: check how ASCII data is stored
+00000000                             5  *-----------------------------------------------------------
+00001000                             6  START   ORG     $1000
+00001000  4E71                       7          NOP
+00001002  4E72 2700                  8          STOP    #$2700 
+00001006                             9  * using bytes 
+00001006= 45 72 72 6F 72            10  ERR1a   DC.B    'Error'
+0000100B= 45 72 72 6F 72            11  ERR1H   DC.B    $45,$72,$72,$6F,$72
+00001010= 45 72 72 6F 72            12  ERR1I   DC.B    'E','r','r','o','r'
+00001015                            13  * using words
+00001016= 4572 726F 7200            14  ERR2a   DC.W    'Error'
+0000101C= 4572 726F                 15  ERR2b   DC.W    'Erro'
+00001020= 0045 0072 0072 0...       16  ERR2H   DC.W    $45,$72,$72,$6F,$72
+0000102A= 4500 7200 7200 6...       17  ERR2I   DC.W    'E','r','r','o','r' 
+00001034= 4572 7200 6F72            18  ERR2Ia  DC.W    'Err','or'       
+0000103A                            19  * using longwords
+0000103A= 4572726F 72000000         20  ERR3a   DC.L    'Error'
+00001042= 45727200                  21  ERR3b   DC.L    'Err'
+00001046= 00000045 00000072 ...     22  ERR3H   DC.L    $45,$72,$72,$6F,$72
+0000105A= 45000000 72000000 ...     23  ERR3I   DC.L    'E','r','r','o','r'
+0000106E= 45727200 6F720000         24  ERR3Ia  DC.L    'Err','or' 
+00001076                            25  
+00001076                            26          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ERR1A               1006
+ERR1H               100B
+ERR1I               1010
+ERR2A               1016
+ERR2B               101C
+ERR2H               1020
+ERR2I               102A
+ERR2IA              1034
+ERR3A               103A
+ERR3B               1042
+ERR3H               1046
+ERR3I               105A
+ERR3IA              106E
+START               1000

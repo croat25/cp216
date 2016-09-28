@@ -1,0 +1,126 @@
+
+*-----------------------------------------------------------
+* Program    : Assignment #1
+* Written by : Bruno Salapic
+* id: 100574460
+
+*-----------------------------------------------------------
+
+-----------------------------------------------------------
+1)What are the addresses of START, num1, num2, and answer?
+-----------------------------------------------------------
+START address is: 00001000
+num1 address is: 00001018
+num2 address is: 0000101C
+answer address is: 00001020
+
+
+-----------------------------------------------------------
+These addresses can be determined from the listing file in two ways. What are the two ways?
+-----------------------------------------------------------
+
+by the symbol table and the address column
+
+-----------------------------------------------------------
+After the program has executed, what is the result of the subtraction? Was the subtraction num1-num2 or num2-num1? Explain
+-----------------------------------------------------------
+33120325 is the result and num 2 -num1.
+
+-----------------------------------------------------------
+2)Run the program using single step trace. Does the assembler make a length assumption?
+-----------------------------------------------------------
+yes it thinks its a word cause thats how easy68k
+
+
+-----------------------------------------------------------
+3)Run the program using single step trace. Does the assembler make a length assumption?
+-----------------------------------------------------------
+assumes its a longword so it moves all of it
+
+-----------------------------------------------------------
+4)Assemble the program. Do you get assembly errors?Does the assembler make a length assumption for the data?
+------------------------------------------------------------
+
+the program cannot be assembled because the immediate data exceeds 16 bits. it assumes its a word but infact we are working
+with a longword so it returns errors
+
+------------------------------------------------------------
+5)Explain your results, i.e. what are the two numbers that the SUB operates on? What result do you obtain? 
+Give the numbers and result obtained in both hexadecimal and binary.
+--------------------------------------------------------------
+when the program is ran only the 2 most significant bits of both num 1 and num 2 are subtracted because the length suffix 
+is .b so it only moves in 2 hex values instead of the full 8 given to us and the num1 is 12 num2 is 45 and the result 
+is 33
+
+-------------------------------------------------------------
+6)Explain your results.
+-------------------------------------------------------------
+the subtract is only done to the numbers that fall within the range of the length specified like byte word or longword
+in memory the digits that are not affect by the subtracting being operated with are the same while the length specified is 
+being subtracted.
+
+-----------------------------------------------------------------------
+7)Explain
+-----------------------------------------------------------------------
+
+
+the assembler treats the word as a lonword in memory.
+
+
+
+-----------------------------------------------------------------------
+9)
+Samples ERRna and ERRnb (where n = 1, 2, 3) specify the characters as one string. How is a string stored in memory? Does it make any difference if the string is shorter, longer, or the same length as the defined storage length, i.e. B, W, L?
+Samples ERRnIa and ERRnIb (where n = 1, 2, 3) specify the characters from the original string as individual characters or small groups of characters. Does this specification give the same representation in memory as putting all of the characters in one string? Explain how are these characters stored in memory?
+Samples ERRnH (where n = 1, 2, 3) specify the characters in the hex equivalent of the ASCII, i.e. $45 = 'E'. Does this specification give the same representation as either of the previous cases (i.e. strings, individual characters, character groups)? Why and why not?
+Most professional assembly language programmers use byte to store characters. Why?
+
+-----------------------------------------------------------------------
+
+1. if stored in byte size it stores all hex values in groups of 2 while in err2a and err2b it is stored in 4bytes and since it was a 5th byte in the word it is padded with zeros and so goes the same thing 
+as ending.w but for longword they are grooped in 8 bytes and padded with zeros on the right
+
+2. if its not long enough it padds from the right with zeros same of question 1
+
+3.padds it from the left opposite of both question 1 and 2
+
+4. because working with bytes is more efficient less lag time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

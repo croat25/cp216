@@ -1,0 +1,234 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 2/6/2016 8:18:25 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a4q5
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000  5847                       9              add     #4,d7
+00001002  4EB9 0000119A             10  lol         jsr     p_crlf 
+00001008  4240                      11              clr     d0
+0000100A  4241                      12              clr     d1
+0000100C  4242                      13              clr     d2
+0000100E  4243                      14              clr     d3  
+00001010  4244                      15              clr     d4  
+00001012  4245                      16              clr     d5
+00001014  4246                      17              clr     d6
+Line 18 ERROR: Invalid opcode
+00001016                            18              clra     a2
+00001016                            19                    
+00001016  43F9 000011C1             20  understart  lea     user,a1
+0000101C  4EB9 000011AE             21              jsr     msg2        ;load adress display
+00001022                            22              
+00001022  3639 0000121A             23              move.w  usersize,d3         ;size of first 4 characters
+00001028  5303                      24              subq.b  #1,d3
+0000102A  45F9 0000121E             25              lea     usere,a2
+00001030  4EB9 0000115E             26  loop        jsr     read1ch
+00001036                            27              
+00001036  B23C 000D                 28              cmp.b  #$0D,d1      ;read characters if not 8 long then error
+0000103A  6700 00D2                 29              beq     error1
+0000103E  14C1                      30              move.b  d1,(a2)+
+00001040  51CB FFEE                 31              dbra    d3,loop
+00001044                            32  
+00001044  4EB9 0000115E             33              jsr     read1ch
+0000104A  B23C 000D                 34              cmp.b  #$0d,d1
+0000104E  6600 00BE                 35              bne     error1
+00001052                            36              
+00001052  45F9 0000121E             37              lea     usere,a2
+00001058  363C 0003                 38              move.w  #3,d3
+0000105C  181A                      39  loop3            move.b  (a2)+,d4
+0000105E  B83C 0041                 40              cmp.b  #65,d4
+00001062  6D00 00AA                 41              blt     error1
+00001066  B83C 005A                 42              cmp.b   #90,d4
+0000106A  6F00 0012                 43              ble     loop2
+0000106E  B83C 0061                 44              cmp.b   #97,d4          ; see if its a charcter
+00001072  6D00 009A                 45              blt     error1
+00001076  B83C 007A                 46              cmp.b   #122,d4
+0000107A  6E00 0092                 47              bgt     error1
+0000107E                            48  loop2      
+0000107E  51CB FFDC                 49              dbra    d3,loop3
+00001082                            50              
+00001082  363C 0003                 51              move.w  #3,d3
+00001086                            52              
+00001086                            53              
+00001086  181A                      54  loop4       move.b  (a2)+,d4
+00001088  B83C 0030                 55              cmp.b   #48,d4
+0000108C  6D00 0080                 56              blt     error1          ;test to see if number
+00001090  B83C 0039                 57              cmp.b   #57,d4
+00001094  6E00 0078                 58              bgt     error1
+00001098                            59              
+00001098  51CB FFEC                 60              dbra    d3,loop4
+0000109C                            61              
+0000109C  4EB9 0000119A             62              jsr     p_crlf
+000010A2  4241                      63              clr     d1
+000010A4  4EB9 0000116A             64              jsr     echo            ;echo 
+000010AA                            65              
+000010AA                            66              
+000010AA                            67              
+000010AA  43F9 000011F2             68  loop9            lea     password,a1
+000010B0  4EB9 000011AE             69              jsr     msg2
+000010B6  4279 00001232             70              clr     number
+000010BC  3639 0000121C             71              move.w  passwordsize,d3         ;password portion of size
+000010C2                            72              
+000010C2  45F9 00001226             73              lea     pass,a2
+000010C8  4EB9 0000115E             74  loop7            jsr     read1ch
+000010CE  B23C 000D                 75              cmp.b   #$0d,d1
+000010D2  6700 0028                 76              beq     loop6
+000010D6  43F9 0000120D             77              lea     star,a1                 ;display stars instead
+000010DC  4EB9 000011AE             78              jsr     msg2
+000010E2  5239 00001232             79              addq.b  #1,number
+000010E8  14C1                      80              move.b  d1,(a2)+
+000010EA  51CB FFDC                 81              dbra    d3,loop7
+000010EE                            82              
+000010EE                            83  
+000010EE  4EB9 0000115E             84              jsr     read1ch 
+000010F4  B23C 000D                 85              cmp.b   #$0d,d1
+000010F8  6600 002A                 86              bne     error2
+000010FC                            87              
+000010FC  1839 00001232             88  loop6       move.b  number,d4
+00001102  B83C 0008                 89              cmp.b   #8,d4                       
+00001106  6D00 001C                 90              blt     error2
+0000110A  6000 002E                 91              bra     end
+0000110E                            92              
+0000110E                            93  
+0000110E  43F9 0000120F             94  error1      lea     error,a1
+00001114  4EB9 000011AE             95              jsr     msg2
+0000111A  4EB9 0000119A             96              jsr     p_crlf
+00001120  6000 FEF4                 97              bra     understart      ; errors
+00001124                            98  
+00001124  43F9 0000120F             99  error2      lea     error,a1
+0000112A  4EB9 000011AE            100              jsr     msg2
+00001130  4EB9 0000119A            101              jsr     p_crlf
+00001136  6000 FF72                102              bra     loop9
+0000113A                           103                               
+0000113A  51CF FEC6                104  end            dbra    d7,lol
+0000113E  4E72 2700                105              stop        #$2700
+00001142                           106              include     'io_util.x68'
+00001142  48E7 8000                107  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+00001146  7012                     108      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+00001148  4E4F                     109      TRAP    #15
+0000114A  4CDF 0001                110      MOVEM.L (SP)+,D0    Restore D0
+0000114E  4E75                     111      RTS
+00001150                           112  
+00001150  48E7 8000                113  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+00001154  7011                     114      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+00001156  4E4F                     115      TRAP    #15 Print the number
+00001158  4CDF 0001                116      MOVEM.L (SP)+,D0    Restore D0
+0000115C  4E75                     117      RTS
+0000115E  7005                     118  read1ch   moveq.l #5,d0
+00001160                           119                              
+00001160  4E4F                     120            trap    #15
+00001162                           121          
+00001162  4E75                     122            rts
+00001164                           123            
+00001164                           124            
+00001164  7004                     125  readnum moveq.l   #4,d0
+00001166  4E4F                     126          trap      #15
+00001168  4E75                     127          rts
+0000116A  700C                     128  echo    moveq.l #12,d0
+0000116C  4E4F                     129          trap    #15
+0000116E  4E75                     130          rts 
+00001170  48E7 8000                131  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+00001174  700D                     132      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+00001176  4E4F                     133      TRAP    #15 Print the string
+00001178  4CDF 0001                134      MOVEM.L (SP)+,D0    Restore D0
+0000117C  4E75                     135      RTS
+0000117E  48E7 8000                136  displayto       MOVEM.L D0,-(SP)    Preserve D0
+00001182  700E                     137      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+00001184  4E4F                     138      TRAP    #15 Print the string
+00001186  4CDF 0001                139      MOVEM.L (SP)+,D0    Restore D0
+0000118A  4E75                     140      RTS
+0000118C                           141      
+0000118C  48E7 8000                142  readkeyboard    MOVEM.L D0,-(SP)    Preserve D0
+00001190  7002                     143      MOVEQ   #2,D0   Set up to print string at A1 with CR/LF
+00001192  4E4F                     144      TRAP    #15 Print the string
+00001194  4CDF 0001                145      MOVEM.L (SP)+,D0    Restore D0
+00001198  4E75                     146      RTS
+0000119A  48E7 8040                147  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+0000119E  700D                     148      MOVEQ.L #13,D0  Set up print with CRLF
+000011A0  43F9 000011C0            149      LEA NULL,A1 Set null string
+000011A6  4E4F                     150      TRAP    #15
+000011A8  4CDF 0201                151      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+000011AC  4E75                     152      RTS
+000011AE                           153      
+000011AE  700E                     154  msg2    moveq.l #14,d0
+000011B0  4E4F                     155          trap    #15
+000011B2  4E75                     156          rts 
+000011B4  700D                     157  msg13    moveq.l #13,d0
+000011B6  4E4F                     158          trap    #15
+000011B8  4E75                     159          rts        
+000011BA  7004                     160  msg3    moveq.l #4,d0
+000011BC  4E4F                     161          trap    #15
+000011BE  4E75                     162          rts         
+000011C0                           163  
+000011C0= 00                       164  NULL    DC.B    0   Empty string
+000011C1                           165  
+000011C1                           166  
+000011C1                           167  
+000011C1                           168  
+000011C1                           169  
+000011C1                           170  
+000011C1                           171  
+000011C1                           172  -------------------- end include --------------------
+000011C1= 65 6E 74 65 72 20 ...    173  user        dc.b    'enter in a valid string like the question asks: ',0
+000011F2= 65 6E 74 65 72 20 ...    174  password    dc.b    'enter the password dumby: ',0
+0000120D= 2A 00                    175  star        dc.b    '*',0
+0000120F= 65 72 72 6F 72 20 ...    176  error       dc.b    'error fifo',0
+0000121A= 0008                     177  usersize    dc.w    8
+0000121C= 000C                     178  passwordsize    dc.w    12
+0000121E                           179                                          ;stuff
+0000121E                           180  usere    ds.b    8
+00001226                           181  pass        ds.b    12
+00001232                           182  number       ds.b    1
+00001233                           183  
+00001233                           184  * Put variables and constants here
+00001233                           185  
+00001233                           186      END    START        ; last line of source
+
+1 error detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DISPLAYTO           117E
+ECHO                116A
+END                 113A
+ERROR               120F
+ERROR1              110E
+ERROR2              1124
+LOL                 1002
+LOOP                1030
+LOOP2               107E
+LOOP3               105C
+LOOP4               1086
+LOOP6               10FC
+LOOP7               10C8
+LOOP9               10AA
+MSG13               11B4
+MSG2                11AE
+MSG3                11BA
+NULL                11C0
+NUMBER              1232
+PASS                1226
+PASSWORD            11F2
+PASSWORDSIZE        121C
+P_CRLF              119A
+P_NUM               1150
+P_PRMPT             1142
+P_STR               1170
+READ1CH             115E
+READKEYBOARD        118C
+READNUM             1164
+STAR                120D
+START               1000
+UNDERSTART          1016
+USER                11C1
+USERE               121E
+USERSIZE            121A

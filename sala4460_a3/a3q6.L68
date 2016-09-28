@@ -1,0 +1,107 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 1/29/2016 6:40:45 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a3q6
+00000000                             3  * Written by :bruno salapic
+00000000                             4  * Date       :idk
+00000000                             5  * Description:the check on works if u hold the button down 
+00000000                             6  *               it doesnt stay on it goes back to c idk dont have time 
+00000000                             7  *               to fix it 
+00000000                             8                              
+00000000                             9  *-----------------------------------------------------------
+00000000  =00E00000                 10  display    equ $e00000
+00000000  =00E00002                 11  display1    equ $e00002
+00000000  =00E00004                 12  display2    equ $e00004
+00000000  =00E00006                 13  display3    equ $e00006
+00000000  =00E00008                 14  display4    equ $e00008         ;display u know
+00000000  =00E0000A                 15  display5    equ $e0000a
+00000000  =00E0000C                 16  display6    equ $e0000c
+00000000  =00E0000E                 17  display7    equ $e0000e
+00000000                            18  
+00000000                            19  
+00000000  =00E00010                 20  leds        equ $e00010
+00000000  =00E00012                 21  switch      equ $e00012     ;self explanatory
+00000000  =00E00014                 22  but         equ $e00014
+00000000                            23  
+00000000                            24    
+00001000                            25          ORG    $1000
+00001000                            26  START:                  ; first instruction of program
+00001000  13FC 006D 00E00000        27  new        move.b  #%1101101,display
+00001008  13FC 0000 00E00002        28          move.b  #%0000000,display1
+00001010  13FC 0000 00E00004        29          move.b  #%0000000,display2  
+00001018  13FC 0000 00E00006        30          move.b  #%0000000,display3          ;setting the displays u know
+00001020  13FC 0000 00E00008        31          move.b  #%0000000,display4
+00001028  13FC 0000 00E0000A        32          move.b  #%0000000,display5
+00001030  13FC 0000 00E0000C        33          move.b  #%0000000,display6
+00001038  13FC 0000 00E0000E        34          move.b  #%0000000,display7
+00001040                            35          
+00001040  13FC 0000 00E00010        36          move.b  #$00,leds           ;setting the leds to 00000000 u know
+00001048                            37          
+00001048                            38  loop    
+00001048  1039 00E00012             39          move.b  switch,d0               ;storing number u know
+0000104E  13C0 00E00010             40          move.b  d0,leds
+00001054  0C39 00FE 00E00014        41          cmp.b   #%11111110,but          
+0000105C  6700 0004                 42          beq     store
+00001060  60E6                      43          bra loop                ;that branch life
+00001062                            44          
+00001062  13FC 0039 00E00000        45  store  move.b  #%0111001,display
+0000106A                            46          
+0000106A  1239 00E00012             47  swag       move.b   switch,d1
+00001070  0C39 007F 00E00014        48         cmp.b    #%01111111,but          ;seeing if buttons are pushed
+00001078  6786                      49         beq      new
+0000107A  0C39 00FE 00E00014        50         cmp.b   #%11111110,but           ; if so do some other stuff
+00001082  6700 0004                 51         beq     check
+00001086  60DA                      52         bra      store
+00001088                            53         
+00001088  B200                      54  check   cmp.b   d0,d1
+0000108A  6E00 000A                 55          bgt     high                ; comepare to orginal number input u think
+0000108E  6D00 0010                 56          blt     low
+00001092  6700 0016                 57          beq     same
+00001096                            58          
+00001096  13FC 0076 00E00000        59  high    move.b  #%1110110,display
+0000109E  60CA                      60          bra     swag
+000010A0  13FC 0038 00E00000        61  low     move.b  #%0111000,display       ; display if its high low or equal
+000010A8  60C0                      62          bra     swag
+000010AA  33FC 0079 00E00000        63  same    move    #%1111001,display
+000010B2  60B6                      64          bra     swag
+000010B4                            65  
+000010B4                            66     
+000010B4                            67  * Put program code here
+000010B4                            68  
+000010B4  FFFF FFFF                 69      SIMHALT             ; halt simulator
+000010B8                            70  
+000010B8                            71  * Put variables and constants here
+000010B8= 00                        72  count   dc.b    0
+000010B9                            73  
+000010B9                            74      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BUT                 E00014
+CHECK               1088
+COUNT               10B8
+DISPLAY             E00000
+DISPLAY1            E00002
+DISPLAY2            E00004
+DISPLAY3            E00006
+DISPLAY4            E00008
+DISPLAY5            E0000A
+DISPLAY6            E0000C
+DISPLAY7            E0000E
+HIGH                1096
+LEDS                E00010
+LOOP                1048
+LOW                 10A0
+NEW                 1000
+SAME                10AA
+START               1000
+STORE               1062
+SWAG                106A
+SWITCH              E00012

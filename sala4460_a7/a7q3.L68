@@ -1,0 +1,505 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/5/2016 1:44:16 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a7q3
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2015/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00001000                             7  START:  ORG         $1000       ;Start of program area
+00001000  41F9 000013C8              8  beginning        LEA         SB,A0
+00001006                             9          
+00001006  4EB9 00001016             10          jsr         oneway
+0000100C                            11          
+0000100C  4EB9 0000133A             12          jsr         sb_dsp
+00001012                            13          
+00001012  4E72 2700                 14  end     STOP        #$2700
+00001016                            15  
+00001016                            16  
+00001016                            17          
+00001016                            18          
+00001016                            19  
+00001016                            20  
+00001016                            21  
+00001016                            22          
+00001016                            23          
+00001016                            24  
+00001016                            25  
+00001016                            26  
+00001016                            27   * Draw b
+00001016  223C 000000AF             28  oneway        move.l      #175,d1
+0000101C  7464                      29          move.l      #100,d2
+0000101E  760A                      30          move.l      #10,d3
+00001020  7A7D                      31          move.l      #125,d5
+00001022  283C 0000FF00             32          move.l     #$0000FF00,d4
+00001028  4EB9 00001164             33          jsr         h_line
+0000102E                            34          
+0000102E  7232                      35          move.l      #50,d1
+00001030  7464                      36          move.l      #100,d2
+00001032  760A                      37          move.l      #10,d3                          -- line work
+00001034  2A3C 000001F4             38          move.l      #500,d5
+0000103A  283C 00FF0000             39          move.l      #$00FF0000,d4
+00001040  4EB9 000011BC             40          jsr         v_line
+00001046                            41          
+00001046  223C 000000AF             42          move.l      #175,d1
+0000104C  243C 000000E1             43          move.l      #225,d2
+00001052  760A                      44          move.l      #10,d3
+00001054  2A3C 00000177             45          move.l      #375,d5
+0000105A  283C 00FF0000             46          move.l      #$00FF0000,d4
+00001060  4EB9 000011BC             47          jsr         v_line
+00001066                            48          
+00001066  223C 00000127             49          move.l      #295,d1
+0000106C  7464                      50          move.l      #100,d2
+0000106E  760A                      51          move.l      #10,d3
+00001070  2A3C 00000087             52          move.l      #135,d5
+00001076  283C 000000FF             53          move.l      #$000000ff,d4
+0000107C  4EB9 00001164             54          jsr         h_line
+00001082                            55          
+00001082                            56          *draw        s
+00001082  223C 000000AF             57          move.l      #175,d1
+00001088  243C 0000012C             58          move.l      #300,d2
+0000108E  760A                      59          move.l      #10,d3
+00001090  7A7D                      60          move.l      #125,d5
+00001092  283C 0000FF00             61          move.l      #$0000FF00,d4
+00001098  4EB9 00001164             62          jsr         h_line
+0000109E                            63          
+0000109E  223C 000000AF             64          move.l      #175,d1
+000010A4  243C 0000012C             65          move.l      #300,d2
+000010AA  760A                      66          move.l      #10,d3
+000010AC  7A3C                      67          move.l      #60,d5
+000010AE  283C 00FF0000             68          move.l      #$00FF0000,d4
+000010B4  4EB9 000011BC             69          jsr         v_line
+000010BA                            70          
+000010BA  223C 000000EB             71          move.l      #235,d1
+000010C0  243C 0000012C             72          move.l      #300,d2
+000010C6  760A                      73          move.l      #10,d3
+000010C8  7A7D                      74          move.l      #125,d5
+000010CA  283C 0000FF00             75          move.l      #$0000FF00,d4
+000010D0  4EB9 00001164             76          jsr         h_line
+000010D6                            77          
+000010D6  223C 000000EB             78          move.l      #235,d1
+000010DC  243C 000001A9             79          move.l      #425,d2
+000010E2  760A                      80          move.l      #10,d3
+000010E4  7A3C                      81          move.l      #60,d5
+000010E6  283C 00FF0000             82          move.l      #$00FF0000,d4
+000010EC  4EB9 000011BC             83          jsr         v_line
+000010F2                            84          
+000010F2  223C 00000127             85           move.l      #295,d1
+000010F8  243C 0000012C             86          move.l      #300,d2
+000010FE  760A                      87          move.l      #10,d3
+00001100  2A3C 00000087             88          move.l      #135,d5
+00001106  283C 0000FF00             89          move.l      #$0000FF00,d4
+0000110C  4EB9 00001164             90          jsr         h_line
+00001112                            91          
+00001112                            92                  
+00001112                            93          * Draw Random Diagonal
+00001112  223C 00000226             94          move.l      #550,d1
+00001118  7464                      95          move.l      #100,d2
+0000111A  760A                      96          move.l      #10,d3
+0000111C  7A6E                      97          move.l      #110,d5
+0000111E  283C 0000FF00             98          move.l      #$0000FF00,d4
+00001124  4EB9 00001214             99          jsr         dl
+0000112A                           100          
+0000112A  223C 000000C8            101          move.l      #200,d1
+00001130  243C 00000226            102          move.l      #550,d2
+00001136  760A                     103          move.l      #10,d3
+00001138  7A6E                     104          move.l      #110,d5
+0000113A  283C 00FF0000            105          move.l      #$00FF0000,d4
+00001140  4EB9 00001214            106          jsr         dl
+00001146                           107          
+00001146  223C 0000012C            108          move.l      #300,d1
+0000114C  243C 00000226            109          move.l      #550,d2
+00001152  760A                     110          move.l      #10,d3
+00001154  7A6E                     111          move.l      #110,d5
+00001156  283C 000000FF            112          move.l      #$000000FF,d4
+0000115C  4EB9 00001214            113          jsr         dl
+00001162  4E75                     114          rts
+00001164                           115          
+00001164                           116          
+00001164                           117     
+00001164                           118  
+00001164                           119          
+00001164                           120          
+00001164                           121          
+00001164                           122          
+00001164                           123         
+00001164                           124  
+00001164                           125  *  D1.L - Y position
+00001164                           126  *  D2.L - X position
+00001164                           127  *  D3.L - Line width
+00001164                           128  *  D4.L - Line length
+00001164                           129  *  D5.L - Line colour
+00001164                           130  *  A0   - Screen Buffer
+00001164                           131  
+00001164  48E7 7F80                132  h_line  movem.l     d1-d7/a0,-(SP)
+00001168  2E01                     133          move.l      d1,d7           ;Preserve Y-Coordinate
+0000116A  E589                     134          lsl.l       #2,d1           
+0000116C  C2FC 0280                135          mulu        #sb_w,d1         ;Set Y-Coordinate (multi by buffer length)
+00001170  D1C1                     136          adda.l      d1,a0
+00001172  E58A                     137          lsl.l       #2,d2           
+00001174  2203                     138          move.l      d3,d1           ;Counter for width
+00001176                           139          
+00001176  4A01                     140  h_draw  tst.b       d1
+00001178  6700 0028                141          beq         h_dsp           ;Draw pixel since one 1 length
+0000117C  D1C2                     142          adda.l      d2,a0
+0000117E  2005                     143          move.l      d5,d0
+00001180                           144          
+00001180  4A00                     145  h_loop  tst.b       d0
+00001182  6700 0008                146          beq         h_width
+00001186  20C4                     147          move.l      d4,(a0)+
+00001188  5380                     148          sub.l       #1,d0
+0000118A  66F4                     149          bne         h_loop
+0000118C                           150          
+0000118C  5381                     151  h_width sub.l       #1,d1
+0000118E  203C 00000280            152          move.l      #sb_w,d0
+00001194  E588                     153          lsl.l       #2,d0
+00001196  2C05                     154          move.l      d5,d6
+00001198  E58E                     155          lsl.l       #2,d6
+0000119A  DC82                     156          add.l       d2,d6
+0000119C  9086                     157          sub.l       d6,d0
+0000119E  D1C0                     158          adda.l      d0,a0
+000011A0  60D4                     159          bra         h_draw
+000011A2                           160          
+000011A2  D687                     161  h_dsp   add.l       d7,d3
+000011A4  CAFC 0A00                162          mulu        #sb_w*4,d5
+000011A8  91C3                     163          suba.l      d3,a0
+000011AA  2C3C 00000280            164          move.l      #sb_w,d6
+000011B0  2E3C 00064000            165          move.l      #sb_w*sb_h,d7               
+000011B6  4CDF 01FE                166          movem.l     (SP)+,d1-d7/a0
+000011BA  4E75                     167          rts
+000011BC                           168  
+000011BC                           169  *  D1.L - Y position
+000011BC                           170  *  D2.L - X position
+000011BC                           171  *  D3.L - Line width
+000011BC                           172  *  D5.L - Line length
+000011BC                           173  *  D4.L - Line colour
+000011BC                           174  *  A0   - Screen Buffer
+000011BC                           175  
+000011BC  48E7 7F80                176  v_line  movem.l     d1-d7/a0,-(SP)
+000011C0  2E01                     177          move.l      d1,d7           ;Preserve Y-Coordinate
+000011C2  E589                     178          lsl.l       #2,d1           
+000011C4  C2FC 0280                179          mulu        #SB_H,d1         ;Set Y-Coordinate (multi by buffer length)
+000011C8  D1C1                     180          adda.l      d1,a0
+000011CA  E58A                     181          lsl.l       #2,d2           
+000011CC  2205                     182          move.l      d5,d1           ;Counter for width
+000011CE                           183          
+000011CE  4A01                     184  v_draw  tst.b       d1
+000011D0  6700 0028                185          beq         v_dsp           ;Draw pixel since one 1 length
+000011D4  D1C2                     186          adda.l      d2,a0
+000011D6  2003                     187          move.l      d3,d0
+000011D8                           188          
+000011D8  4A00                     189  v_loop  tst.b       d0
+000011DA  6700 0008                190          beq         v_len
+000011DE  20C4                     191          move.l      d4,(a0)+
+000011E0  5380                     192          sub.l       #1,d0
+000011E2  66F4                     193          bne         v_loop
+000011E4                           194          
+000011E4  5381                     195  v_len   sub.l       #1,d1
+000011E6  203C 00000280            196          move.l      #SB_W,d0
+000011EC  E588                     197          lsl.l       #2,d0
+000011EE  2C03                     198          move.l      d3,d6
+000011F0  E58E                     199          lsl.l       #2,d6
+000011F2  DC82                     200          add.l       d2,d6
+000011F4  9086                     201          sub.l       d6,d0
+000011F6  D1C0                     202          adda.l      d0,a0
+000011F8                           203        
+000011F8  60D4                     204          bra         v_draw
+000011FA                           205          
+000011FA  DA87                     206  v_dsp   add.l       d7,d5
+000011FC  CAFC 0A00                207          mulu        #sb_w*4,d5
+00001200  91C5                     208          suba.l      d5,a0
+00001202  2C3C 00000280            209          move.l      #sb_w,d6
+00001208  2E3C 00064000            210          move.l      #sb_w*sb_h,d7               
+0000120E  4CDF 01FE                211          movem.l     (SP)+,d1-d7/a0
+00001212  4E75                     212          rts
+00001214                           213  
+00001214                           214  * Subroutine to draw diagonal line 
+00001214                           215  
+00001214  48E7 7F80                216  dl      movem.l     d1-d7/a0,-(sp)
+00001218  2E01                     217          move.l      d1,d7           ;Preserve Y-Coordinate
+0000121A  E589                     218          lsl.l       #2,d1           
+0000121C  C2FC 0280                219          mulu        #sb_h,d1        ;Set Y-Coordinate (multi by buffer length)
+00001220  D1C1                     220          adda.l      d1,a0
+00001222  E58A                     221          lsl.l       #2,d2           
+00001224  2205                     222          move.l      d5,d1           ;Counter for width
+00001226                           223          
+00001226  4A01                     224  dld     tst.b      d1
+00001228  6700 0028                225          beq         dldispla          ;Draw pixel since one 1 length
+0000122C  D1C2                     226          adda.l      d2,a0
+0000122E  2003                     227          move.l      d3,d0
+00001230                           228          
+00001230  4A00                     229  dlloop  tst.b       d0
+00001232  6700 0008                230          beq         dllen
+00001236  20C4                     231          move.l      d4,(a0)+
+00001238  5580                     232          sub.l       #2,d0
+0000123A  66F4                     233          bne         dlloop
+0000123C                           234          
+0000123C  5281                     235  dllen   add.l       #1,d1
+0000123E  203C 00000280            236          move.l      #sb_w,d0
+00001244  E588                     237          lsl.l       #2,d0
+00001246  2C03                     238          move.l      d3,d6
+00001248  E58E                     239          lsl.l       #2,d6
+0000124A  DC82                     240          add.l       d2,d6
+0000124C  9086                     241          sub.l       d6,d0
+0000124E  D1C0                     242          adda.l      d0,a0
+00001250  60D4                     243          bra         dld
+00001252                           244          
+00001252  DA87                     245  dldispla add.l       d7,d5
+00001254  CAFC 0A00                246          mulu        #sb_w*4,d5
+00001258  91C5                     247          suba.l      d5,a0
+0000125A  2C3C 00000280            248          move.l      #sb_w,d6
+00001260  2E3C 00064000            249          move.l      #sb_w*sb_h,d7       
+00001266  4CDF 01FE                250          movem.l     (sp)+,d1-d7/a0
+0000126A  4E75                     251          rts
+0000126C                           252  
+0000126C                           253  
+0000126C                           254  
+0000126C                           255          INCLUDE     'io_util.x68'
+0000126C  48E7 8000                256  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+00001270  7012                     257      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+00001272  4E4F                     258      TRAP    #15
+00001274  4CDF 0001                259      MOVEM.L (SP)+,D0    Restore D0
+00001278  4E75                     260      RTS
+0000127A                           261  
+0000127A  48E7 8000                262  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+0000127E  7011                     263      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+00001280  4E4F                     264      TRAP    #15 Print the number
+00001282  4CDF 0001                265      MOVEM.L (SP)+,D0    Restore D0
+00001286  4E75                     266      RTS
+00001288                           267      
+00001288                           268      
+00001288                           269      
+00001288                           270  GETNUM  
+00001288  7004                     271      MOVEQ.L #4,D0       
+0000128A  4E4F                     272      TRAP    #15
+0000128C  4E75                     273      RTS
+0000128E                           274  
+0000128E                           275  
+0000128E                           276  readNUM 
+0000128E  7003                     277      MOVEQ.L #3,D0       
+00001290  4E4F                     278      TRAP    #15
+00001292  4E75                     279      RTS 
+00001294  48E7 8000                280  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+00001298  700D                     281      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+0000129A  4E4F                     282      TRAP    #15 Print the string
+0000129C  4CDF 0001                283      MOVEM.L (SP)+,D0    Restore D0
+000012A0  4E75                     284      RTS
+000012A2                           285  
+000012A2  48E7 8040                286  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+000012A6  700D                     287      MOVEQ.L #13,D0  Set up print with CRLF
+000012A8  43F9 0000131C            288      LEA NULL,A1 Set null string
+000012AE  4E4F                     289      TRAP    #15
+000012B0  4CDF 0201                290      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+000012B4  4E75                     291      RTS
+000012B6                           292  
+000012B6  48E7 8000                293  P_STRNR MOVEM.L D0,-(SP)    Preserve D0
+000012BA  700E                     294      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+000012BC  4E4F                     295      TRAP    #15 Print the string
+000012BE  4CDF 0001                296      MOVEM.L (SP)+,D0    Restore D0
+000012C2  4E75                     297      RTS
+000012C4                           298  
+000012C4  48E7 8000                299  P_CHAR  MOVEM.L D0,-(SP)
+000012C8  7005                     300      MOVEQ.L #5,D0
+000012CA  4E4F                     301      TRAP    #15
+000012CC  4CDF 0001                302      MOVEM.L (SP)+,D0
+000012D0  4E75                     303      RTS
+000012D2                           304      
+000012D2                           305      
+000012D2                           306      
+000012D2                           307      
+000012D2  48E7 8000                308  P_MSG   MOVEM.L D0,-(SP)    Preserve D0
+000012D6  700E                     309      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+000012D8  4E4F                     310      TRAP    #15 Print the string
+000012DA  4CDF 0001                311      MOVEM.L (SP)+,D0    Restore D0
+000012DE  4E75                     312      RTS
+000012E0                           313  
+000012E0  48E7 8000                314  P_RSTR  MOVEM.L D0,-(SP)    Preserve D0
+000012E4  7002                     315      MOVEQ   #2,D0   Set up to read string into (A1)
+000012E6  4E4F                     316      TRAP    #15 Read the string
+000012E8  4CDF 0001                317      MOVEM.L (SP)+,D0    Restore D0
+000012EC  4E75                     318      RTS
+000012EE                           319  
+000012EE  48E7 C000                320  P_ECHO_ON   MOVEM.L D0-D1,-(SP)
+000012F2                           321  
+000012F2  7201                     322      MOVEQ.L #1,D1
+000012F4  700C                     323      MOVEQ.L #12,D0
+000012F6  4E4F                     324      TRAP    #15
+000012F8                           325  
+000012F8  4CDF 0003                326      MOVEM.L (SP)+,D0-D1
+000012FC  4E75                     327      RTS
+000012FE                           328  
+000012FE  48E7 C000                329  P_ECHO_OFF  MOVEM.L D0-D1,-(SP)
+00001302                           330  
+00001302  7200                     331      MOVEQ.L #0,D1
+00001304  700C                     332      MOVEQ.L #12,D0
+00001306  4E4F                     333      TRAP    #15
+00001308                           334  
+00001308  4CDF 0003                335      MOVEM.L (SP)+,D0-D1
+0000130C  4E75                     336      RTS
+0000130E                           337  
+0000130E  48E7 8000                338  P_DCHAR MOVEM.L D0,-(SP)
+00001312                           339  
+00001312  7006                     340      MOVEQ.L #6,D0
+00001314  4E4F                     341      TRAP    #15
+00001316                           342  
+00001316  4CDF 0001                343      MOVEM.L (SP)+,D0
+0000131A  4E75                     344      RTS
+0000131C                           345  
+0000131C= 00                       346  NULL    DC.B    0   * Empty string
+0000131D                           347  
+0000131D                           348  
+0000131D                           349  
+0000131D                           350  
+0000131D                           351  
+0000131D                           352  -------------------- end include --------------------
+0000131D                           353          
+0000131D                           354          INCLUDE     'buffer.x68'
+0000131D                           355  
+0000131D  =00000280                356  SB_W    EQU 640
+0000131D  =00000280                357  SB_H    EQU 640
+0000131D                           358  
+0000131D  =00064000                359  SB_S    EQU SB_W*SB_H   * Screen buffer size in pixels (long words).
+0000131D                           360  
+0000131E  48E7 0180                361  SB_CLR  MOVEM.L D7/A0,-(SP)
+00001322                           362  
+00001322  41F9 000013C8            363      LEA SB,A0
+00001328  2E3C 00064000            364      MOVE.L  #SB_S,D7
+0000132E                           365  
+0000132E  20C1                     366  SB_CLR_LP   MOVE.L  D1,(A0)+    * Set the pixel color.
+00001330  5387                     367      SUBQ.L  #1,D7
+00001332  6EFA                     368      BGT SB_CLR_LP
+00001334                           369      
+00001334  4CDF 0180                370      MOVEM.L (SP)+,D7/A0
+00001338  4E75                     371      RTS
+0000133A                           372  
+0000133A  48E7 F080                373  SB_DSP  MOVEM.L D0-D3/A0,-(SP)
+0000133E                           374  
+0000133E  7021                     375      MOVEQ.L #33,D0
+00001340  223C 02800000            376      MOVE.L  #SB_W*$10000,D1 * Set the screen width (upper word)
+00001346  0641 0280                377      ADD.W   #SB_H,D1    * Set the screen height (lower word)
+0000134A  4E4F                     378      TRAP    #15
+0000134C                           379  
+0000134C  41F9 000013C8            380      LEA SB,A0   * Go to the screen buffer
+00001352  4282                     381      CLR.L   D2  * Initialize x
+00001354  4283                     382      CLR.L   D3  * Initialize y
+00001356                           383  
+00001356  7050                     384  SB_DSP_LP   MOVEQ.L #80,D0  * Set color task number.
+00001358  2218                     385      MOVE.L  (A0)+,D1    * Copy pixel color value to D1.
+0000135A  4E4F                     386      TRAP    #15 * Set the pen color.
+0000135C                           387      
+0000135C  7052                     388      MOVEQ.L #82,D0  * Set draw pixel task number.
+0000135E  2203                     389      MOVE.L  D3,D1   * Set x (y is already set)
+00001360  4E4F                     390      TRAP    #15 * Draw the pixel
+00001362                           391      
+00001362  5283                     392      ADDQ.L  #1,D3   * Increment x
+00001364  B6BC 00000280            393      CMP.L   #SB_W,D3    * Are the columns finished?
+0000136A  66EA                     394      BNE SB_DSP_LP   * No - display the next pixel
+0000136C  4283                     395      CLR.L   D3  * Yes - set x to 0
+0000136E  5282                     396      ADDQ.L  #1,D2   * Increment y
+00001370  B4BC 00000280            397      CMP.L   #SB_H,D2    * Are the rows finished?
+00001376  66DE                     398      BNE SB_DSP_LP   * No - continue drawing
+00001378                           399      
+00001378  4CDF 010F                400      MOVEM.L (SP)+,D0-D3/A0
+0000137C  4E75                     401      RTS
+0000137E                           402      
+0000137E  48E7 F080                403  SB_DSP1 MOVEM.L D0-D3/A0,-(SP)
+00001382                           404  
+00001382  7021                     405      MOVEQ.L #33,D0
+00001384  223C 02800000            406      MOVE.L  #SB_W*$10000,D1 * Set the screen width (upper word)
+0000138A  0641 0280                407      ADD.W   #SB_H,D1    * Set the screen height (lower word)
+0000138E  4E4F                     408      TRAP    #15
+00001390                           409  
+00001390  41F9 000013C8            410      LEA SB,A0   * Go to the screen buffer
+00001396  4282                     411      CLR.L   D2  * Initialize x
+00001398  4283                     412      CLR.L   D3  * Initialize y
+0000139A                           413  
+0000139A  7050                     414  SB_DSP_LP1  MOVEQ.L #80,D0
+0000139C                           415              *move.l    (a0),d5
+0000139C                           416              *sub.l     #$00ffffff,d5
+0000139C                           417              *move.l    d5,(a0)  * Set color task number.
+0000139C  2218                     418      MOVE.L  (A0)+,D1
+0000139E  0481 00FFFFFF            419              sub.l     #$0ffffff,d1  * Copy pixel color value to D1.
+000013A4  4E4F                     420      TRAP    #15 * Set the pen color.
+000013A6                           421      
+000013A6  7052                     422      MOVEQ.L #82,D0
+000013A8                           423                  * Set draw pixel task number.
+000013A8  2203                     424      MOVE.L  D3,D1
+000013AA                           425                  
+000013AA  4E4F                     426      TRAP    #15 * Draw the pixel
+000013AC                           427      
+000013AC  5283                     428      ADDQ.L  #1,D3   * Increment x
+000013AE  B6BC 00000280            429      CMP.L   #SB_W,D3    * Are the columns finished?
+000013B4  66E4                     430      BNE SB_DSP_LP1  * No - display the next pixel
+000013B6  4283                     431      CLR.L   D3  * Yes - set x to 0
+000013B8  5282                     432      ADDQ.L  #1,D2   * Increment y
+000013BA  B4BC 00000280            433      CMP.L   #SB_H,D2    * Are the rows finished?
+000013C0  66D8                     434      BNE SB_DSP_LP1  * No - continue drawing
+000013C2                           435      
+000013C2  4CDF 010F                436      MOVEM.L (SP)+,D0-D3/A0
+000013C6  4E75                     437      RTS
+000013C8                           438  SB  DS.L    SB_S    * Screen buffer storage.
+001913C8  =001913C8                439  SB_E    EQU *   * Screen buffer end address.
+001913C8                           440  
+001913C8                           441  
+001913C8                           442  
+001913C8                           443  
+001913C8                           444  
+001913C8                           445  -------------------- end include --------------------
+001913C8= 65 6E 74 65 72 20 ...    446  prmpt    dc.b   'enter 0 to terminate and 1 to invert',0
+001913ED                           447  
+001913ED                           448          END         START       ;End of program and entry
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BEGINNING           1000
+DL                  1214
+DLD                 1226
+DLDISPLA            1252
+DLLEN               123C
+DLLOOP              1230
+END                 1012
+GETNUM              1288
+H_DRAW              1176
+H_DSP               11A2
+H_LINE              1164
+H_LOOP              1180
+H_WIDTH             118C
+NULL                131C
+ONEWAY              1016
+PRMPT               1913C8
+P_CHAR              12C4
+P_CRLF              12A2
+P_DCHAR             130E
+P_ECHO_OFF          12FE
+P_ECHO_ON           12EE
+P_MSG               12D2
+P_NUM               127A
+P_PRMPT             126C
+P_RSTR              12E0
+P_STR               1294
+P_STRNR             12B6
+READNUM             128E
+SB                  13C8
+SB_CLR              131E
+SB_CLR_LP           132E
+SB_DSP              133A
+SB_DSP1             137E
+SB_DSP_LP           1356
+SB_DSP_LP1          139A
+SB_E                1913C8
+SB_H                280
+SB_S                64000
+SB_W                280
+START               1000
+V_DRAW              11CE
+V_DSP               11FA
+V_LEN               11E4
+V_LINE              11BC
+V_LOOP              11D8

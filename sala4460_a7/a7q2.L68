@@ -1,0 +1,239 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/5/2016 12:26:10 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a7q2
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2015/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000  =00000800                  7  buffersize  equ 2048
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  
+00001000                            10              *lea     fname,a1
+00001000  4EB9 00001030             11              jsr     o_dialog
+00001006  4EB9 0000105E             12              jsr     f_opene
+0000100C  4EB9 0000106A             13              jsr     f_error
+00001012  6600 0018                 14              bne     finish
+00001016  23C1 000011A0             15              move.l  d1,filee
+0000101C                            16              
+0000101C  43F9 000011A1             17              lea     data,a1
+00001022  343C 0800                 18              move    #buffersize,d2
+00001026  4EB9 00001086             19              jsr     f_read
+0000102C                            20  
+0000102C                            21  
+0000102C  4E72 2700                 22  finish          stop        #$2700
+00001030                            23              
+00001030                            24              
+00001030  48E7 00C0                 25  O_DIALOG    MOVEM.L A0-A1,-(SP)
+00001034                            26  
+00001034  C348                      27      EXG A1,A0   * Save the filename address.
+00001036  43F9 0000118F             28      LEA PRMPT,A1    * Get the prompt address.
+0000103C  4EB9 00001128             29      JSR P_STRNR * Display the prompt. (io_util.X68)
+00001042  C149                      30      EXG A0,A1   * Reset the filename address.
+00001044  4EB9 00001152             31      JSR P_RSTR  * Read the filename from the user. (io_util.X68)
+0000104A                            32  
+0000104A  4CDF 0300                 33      MOVEM.L (SP)+,A0-A1
+0000104E  4E75                      34      RTS
+00001050                            35  
+00001050                            36      
+00001050                            37  *-----------------------------------------------------------
+00001050                            38  * Includes:
+00001050                            39      INCLUDE 'file_util.X68'
+00001050  48E7 8000                 40  F_CLALL MOVEM.L D0,-(SP)
+00001054                            41  
+00001054  7032                      42      MOVEQ.L #50,D0
+00001056  4E4F                      43      TRAP    #15
+00001058                            44  
+00001058  4CDF 0001                 45      MOVEM.L (SP)+,D0
+0000105C  4E75                      46      RTS
+0000105E                            47  
+0000105E  7033                      48  F_OPENE MOVEQ.L #51,D0  * Set up file open, name in A1
+00001060  4E4F                      49      TRAP    #15
+00001062  4E75                      50      RTS
+00001064                            51  
+00001064  7034                      52  F_OPENN MOVEQ.L #52,D0  * Set up file open, name in A1
+00001066  4E4F                      53      TRAP    #15
+00001068  4E75                      54      RTS
+0000106A                            55  
+0000106A  48E7 80C0                 56  F_ERROR MOVEM.L D0/A0-A1,-(SP)
+0000106E                            57  
+0000106E  41F9 000010CE             58      LEA F_TABLE,A0  * Get start of lookup table.
+00001074  E588                      59      LSL.L   #2,D0   * Multiply error number by 4 for lookup table steps.
+00001076  2270 0800                 60      MOVE.L  0(A0,D0.L),A1   * Load the proper string address into A1.
+0000107A  4EB9 00001106             61      JSR P_STR   * Print the error message. (io_util.X68)
+00001080                            62  
+00001080  4CDF 0301                 63      MOVEM.L (SP)+,D0/A0-A1
+00001084  4E75                      64      RTS
+00001086                            65  
+00001086  7035                      66  F_READ  MOVEQ.L #53,D0  Set up read file
+00001088  4E4F                      67      TRAP    #15
+0000108A  4E75                      68      RTS
+0000108C                            69  
+0000108C  7035                      70  F_WRITE MOVEQ.L #53,D0  Set up read file
+0000108E  4E4F                      71      TRAP    #15
+00001090  4E75                      72      RTS
+00001092                            73  
+00001092  7037                      74  F_POS   MOVEQ.L #55,D0
+00001094  4E4F                      75      TRAP    #15
+00001096  4E75                      76      RTS
+00001098                            77  
+00001098                            78  
+00001098= 53 75 63 63 65 73 ...     79  F_ERR0  DC.B    'Success.',0    * Error code 0
+000010A1= 45 6E 64 20 6F 66 ...     80  F_ERR1  DC.B    'End of file.',0    * Error code 1
+000010AE= 46 69 6C 65 20 65 ...     81  F_ERR2  DC.B    'File error.',0 * Error code 2
+000010BA= 46 69 6C 65 20 69 ...     82  F_ERR3  DC.B    'File is read only.',0  * Error code 3
+000010CE= 00001098 000010A1 ...     83  F_TABLE DC.L    F_ERR0,F_ERR1,F_ERR2,F_ERR3
+000010DE                            84  
+000010DE                            85  -------------------- end include --------------------
+000010DE                            86      INCLUDE 'io_util.X68'
+000010DE  48E7 8000                 87  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+000010E2  7012                      88      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+000010E4  4E4F                      89      TRAP    #15
+000010E6  4CDF 0001                 90      MOVEM.L (SP)+,D0    Restore D0
+000010EA  4E75                      91      RTS
+000010EC                            92  
+000010EC  48E7 8000                 93  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+000010F0  7011                      94      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+000010F2  4E4F                      95      TRAP    #15 Print the number
+000010F4  4CDF 0001                 96      MOVEM.L (SP)+,D0    Restore D0
+000010F8  4E75                      97      RTS
+000010FA                            98      
+000010FA                            99      
+000010FA                           100      
+000010FA                           101  GETNUM  
+000010FA  7004                     102      MOVEQ.L #4,D0       
+000010FC  4E4F                     103      TRAP    #15
+000010FE  4E75                     104      RTS
+00001100                           105  
+00001100                           106  
+00001100                           107  readNUM 
+00001100  7003                     108      MOVEQ.L #3,D0       
+00001102  4E4F                     109      TRAP    #15
+00001104  4E75                     110      RTS 
+00001106  48E7 8000                111  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+0000110A  700D                     112      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+0000110C  4E4F                     113      TRAP    #15 Print the string
+0000110E  4CDF 0001                114      MOVEM.L (SP)+,D0    Restore D0
+00001112  4E75                     115      RTS
+00001114                           116  
+00001114  48E7 8040                117  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+00001118  700D                     118      MOVEQ.L #13,D0  Set up print with CRLF
+0000111A  43F9 0000118E            119      LEA NULL,A1 Set null string
+00001120  4E4F                     120      TRAP    #15
+00001122  4CDF 0201                121      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+00001126  4E75                     122      RTS
+00001128                           123  
+00001128  48E7 8000                124  P_STRNR MOVEM.L D0,-(SP)    Preserve D0
+0000112C  700E                     125      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+0000112E  4E4F                     126      TRAP    #15 Print the string
+00001130  4CDF 0001                127      MOVEM.L (SP)+,D0    Restore D0
+00001134  4E75                     128      RTS
+00001136                           129  
+00001136  48E7 8000                130  P_CHAR  MOVEM.L D0,-(SP)
+0000113A  7005                     131      MOVEQ.L #5,D0
+0000113C  4E4F                     132      TRAP    #15
+0000113E  4CDF 0001                133      MOVEM.L (SP)+,D0
+00001142  4E75                     134      RTS
+00001144                           135      
+00001144                           136      
+00001144                           137      
+00001144                           138      
+00001144  48E7 8000                139  P_MSG   MOVEM.L D0,-(SP)    Preserve D0
+00001148  700E                     140      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+0000114A  4E4F                     141      TRAP    #15 Print the string
+0000114C  4CDF 0001                142      MOVEM.L (SP)+,D0    Restore D0
+00001150  4E75                     143      RTS
+00001152                           144  
+00001152  48E7 8000                145  P_RSTR  MOVEM.L D0,-(SP)    Preserve D0
+00001156  7002                     146      MOVEQ   #2,D0   Set up to read string into (A1)
+00001158  4E4F                     147      TRAP    #15 Read the string
+0000115A  4CDF 0001                148      MOVEM.L (SP)+,D0    Restore D0
+0000115E  4E75                     149      RTS
+00001160                           150  
+00001160  48E7 C000                151  P_ECHO_ON   MOVEM.L D0-D1,-(SP)
+00001164                           152  
+00001164  7201                     153      MOVEQ.L #1,D1
+00001166  700C                     154      MOVEQ.L #12,D0
+00001168  4E4F                     155      TRAP    #15
+0000116A                           156  
+0000116A  4CDF 0003                157      MOVEM.L (SP)+,D0-D1
+0000116E  4E75                     158      RTS
+00001170                           159  
+00001170  48E7 C000                160  P_ECHO_OFF  MOVEM.L D0-D1,-(SP)
+00001174                           161  
+00001174  7200                     162      MOVEQ.L #0,D1
+00001176  700C                     163      MOVEQ.L #12,D0
+00001178  4E4F                     164      TRAP    #15
+0000117A                           165  
+0000117A  4CDF 0003                166      MOVEM.L (SP)+,D0-D1
+0000117E  4E75                     167      RTS
+00001180                           168  
+00001180  48E7 8000                169  P_DCHAR MOVEM.L D0,-(SP)
+00001184                           170  
+00001184  7006                     171      MOVEQ.L #6,D0
+00001186  4E4F                     172      TRAP    #15
+00001188                           173  
+00001188  4CDF 0001                174      MOVEM.L (SP)+,D0
+0000118C  4E75                     175      RTS
+0000118E                           176  
+0000118E= 00                       177  NULL    DC.B    0   * Empty string
+0000118F                           178  
+0000118F                           179  
+0000118F                           180  
+0000118F                           181  
+0000118F                           182  
+0000118F                           183  -------------------- end include --------------------
+0000118F                           184      
+0000118F                           185      
+0000118F                           186      
+0000118F                           187      
+0000118F= 77 61 74 20 69 73 ...    188  prmpt       dc.b    'wat is file name',0
+000011A0                           189  filee       ds.b    1
+000011A1                           190      
+000011A1                           191  data        ds.b    buffersize  
+000019A1                           192  
+000019A1                           193  
+000019A1                           194      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BUFFERSIZE          800
+DATA                11A1
+FILEE               11A0
+FINISH              102C
+F_CLALL             1050
+F_ERR0              1098
+F_ERR1              10A1
+F_ERR2              10AE
+F_ERR3              10BA
+F_ERROR             106A
+F_OPENE             105E
+F_OPENN             1064
+F_POS               1092
+F_READ              1086
+F_TABLE             10CE
+F_WRITE             108C
+GETNUM              10FA
+NULL                118E
+O_DIALOG            1030
+PRMPT               118F
+P_CHAR              1136
+P_CRLF              1114
+P_DCHAR             1180
+P_ECHO_OFF          1170
+P_ECHO_ON           1160
+P_MSG               1144
+P_NUM               10EC
+P_PRMPT             10DE
+P_RSTR              1152
+P_STR               1106
+P_STRNR             1128
+READNUM             1100
+START               1000

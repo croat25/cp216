@@ -1,0 +1,51 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 1/29/2016 6:40:25 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :q4
+00000000                             3  * Written by :bruno salapic 
+00000000                             4  * Date       :idk
+00000000                             5  * Description:swag q4
+00000000                             6  *-----------------------------------------------------------
+00000000                             7   
+00000000  =00E00010                  8  leds    equ $e00010
+00000000  =00E00012                  9  switch  equ $e00012
+00000000  =00E00014                 10  push    equ $e00014         ; initiate stuff on hardware
+00000000                            11  
+00001000                            12  START:           ORG    $1000
+00001000                            13                    ; first instruction of program
+00001000                            14  
+00001000                            15     
+00001000  13FC 0000 00E00010        16          move.b  #$00,leds           ; move things for leds to be off
+00001008                            17      
+00001008  1439 00E00014             18  loop    move.b  push,d2
+0000100E  4642                      19          not     d2                      
+00001010  B439 0000102E             20          cmp.b   comp,d2
+00001016  6600 0004                 21          bne     top                     ;when switch is hit it displays
+0000101A  60EC                      22          bra     loop
+0000101C  1039 00E00012             23  top     move.b  switch,d0
+00001022  13C0 00E00010             24          move.b  d0,leds                 ;swag
+00001028                            25          
+00001028  60DE                      26          bra     loop      
+0000102A                            27  
+0000102A  FFFF FFFF                 28      SIMHALT             ; halt simulator
+0000102E                            29  
+0000102E                            30  * Put variables and constants here
+0000102E= 00                        31  comp    dc.b    $0
+0000102F                            32      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+COMP                102E
+LEDS                E00010
+LOOP                1008
+PUSH                E00014
+START               1000
+SWITCH              E00012
+TOP                 101C

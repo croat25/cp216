@@ -1,0 +1,140 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 2/6/2016 8:07:34 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a4q1
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/month/day
+00000000                             5  * Description:idk
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  
+00001000  43F9 000012C1             10              lea     prompting,a1        ;lea the address  to read character at atime
+00001006  4EB9 000010B0             11              jsr     msg2
+0000100C  1E39 000011C2             12              move.b  range,d7
+00001012  45F9 000010C3             13              lea     string,a2
+00001018                            14              
+00001018  4EB9 00001060             15  loop            jsr     read1ch
+0000101E  14C1                      16              move.b  d1,(a2)+
+00001020  B27C 000D                 17              cmp     #13,d1
+00001024  6700 000C                 18              beq     end
+00001028  5205                      19              add.b   #1,d5               ; do my magic trick here
+0000102A  51CF FFEC                 20              dbra   d7,loop
+0000102E                            21              
+0000102E                            22  
+0000102E  5204                      23              add.b   #1,d4
+00001030  60E6                      24              bra     loop        
+00001032                            25              
+00001032                            26                                          ;display the length back to display #swag
+00001032  43F9 000012E1             27  end         lea     final,a1
+00001038                            28                        
+00001038  1205                      29              move.b  d5,d1
+0000103A  4EB9 00001052             30              jsr     p_num
+00001040  4E72 2700                 31              stop        #$2700
+00001044                            32  
+00001044                            33  * Put variables and constants here
+00001044                            34              include 'io_util.x68'
+00001044  48E7 8000                 35  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+00001048  7012                      36      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+0000104A  4E4F                      37      TRAP    #15
+0000104C  4CDF 0001                 38      MOVEM.L (SP)+,D0    Restore D0
+00001050  4E75                      39      RTS
+00001052                            40  
+00001052  48E7 8000                 41  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+00001056  7011                      42      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+00001058  4E4F                      43      TRAP    #15 Print the number
+0000105A  4CDF 0001                 44      MOVEM.L (SP)+,D0    Restore D0
+0000105E  4E75                      45      RTS
+00001060  7005                      46  read1ch   moveq.l #5,d0
+00001062                            47                              
+00001062  4E4F                      48            trap    #15
+00001064                            49          
+00001064  4E75                      50            rts
+00001066                            51            
+00001066                            52            
+00001066  7004                      53  readnum moveq.l   #4,d0
+00001068  4E4F                      54          trap      #15
+0000106A  4E75                      55          rts
+0000106C  700C                      56  echo    moveq.l #12,d0
+0000106E  4E4F                      57          trap    #15
+00001070  4E75                      58          rts 
+00001072  48E7 8000                 59  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+00001076  700D                      60      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+00001078  4E4F                      61      TRAP    #15 Print the string
+0000107A  4CDF 0001                 62      MOVEM.L (SP)+,D0    Restore D0
+0000107E  4E75                      63      RTS
+00001080  48E7 8000                 64  displayto       MOVEM.L D0,-(SP)    Preserve D0
+00001084  700E                      65      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+00001086  4E4F                      66      TRAP    #15 Print the string
+00001088  4CDF 0001                 67      MOVEM.L (SP)+,D0    Restore D0
+0000108C  4E75                      68      RTS
+0000108E                            69      
+0000108E  48E7 8000                 70  readkeyboard    MOVEM.L D0,-(SP)    Preserve D0
+00001092  7002                      71      MOVEQ   #2,D0   Set up to print string at A1 with CR/LF
+00001094  4E4F                      72      TRAP    #15 Print the string
+00001096  4CDF 0001                 73      MOVEM.L (SP)+,D0    Restore D0
+0000109A  4E75                      74      RTS
+0000109C  48E7 8040                 75  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+000010A0  700D                      76      MOVEQ.L #13,D0  Set up print with CRLF
+000010A2  43F9 000010C2             77      LEA NULL,A1 Set null string
+000010A8  4E4F                      78      TRAP    #15
+000010AA  4CDF 0201                 79      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+000010AE  4E75                      80      RTS
+000010B0                            81      
+000010B0  700E                      82  msg2    moveq.l #14,d0
+000010B2  4E4F                      83          trap    #15
+000010B4  4E75                      84          rts 
+000010B6  700D                      85  msg13    moveq.l #13,d0
+000010B8  4E4F                      86          trap    #15
+000010BA  4E75                      87          rts        
+000010BC  7004                      88  msg3    moveq.l #4,d0
+000010BE  4E4F                      89          trap    #15
+000010C0  4E75                      90          rts         
+000010C2                            91  
+000010C2= 00                        92  NULL    DC.B    0   Empty string
+000010C3                            93  
+000010C3                            94  
+000010C3                            95  
+000010C3                            96  
+000010C3                            97  
+000010C3                            98  
+000010C3                            99  
+000010C3                           100  -------------------- end include --------------------
+000010C3                           101              
+000010C3                           102  string      ds.b    255
+000011C2                           103  range       ds.b    255            
+000012C1= 65 6E 74 65 72 20 ...    104  prompting   dc.b    'enter in a string of characters',0
+000012E1= 74 68 65 72 65 20 ...    105  final       dc.b    'there are :',0
+000012ED= 01                       106  us1         dc.b    1
+000012EE                           107      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DISPLAYTO           1080
+ECHO                106C
+END                 1032
+FINAL               12E1
+LOOP                1018
+MSG13               10B6
+MSG2                10B0
+MSG3                10BC
+NULL                10C2
+PROMPTING           12C1
+P_CRLF              109C
+P_NUM               1052
+P_PRMPT             1044
+P_STR               1072
+RANGE               11C2
+READ1CH             1060
+READKEYBOARD        108E
+READNUM             1066
+START               1000
+STRING              10C3
+US1                 12ED

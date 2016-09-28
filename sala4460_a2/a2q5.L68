@@ -1,0 +1,38 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/22/2016 8:12:48 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a2q5
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2015/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  
+00001000  2039 00001022             10              move.l  login,d0
+00001006  2239 00001026             11              move.l  login+4,d1
+0000100C  0680 20202020             12              add.l   #$20202020,d0
+00001012                            13              
+00001012  23C0 0000102A             14              move.l  d0,result
+00001018  23C1 0000102E             15              move.l  d1,result+4
+0000101E                            16  
+0000101E  4E72 2700                 17              stop        #$2700
+00001022                            18  
+00001022                            19  * Put variables and constants here
+00001022= 53414C41 34343630         20  login       dc.l    'SALA4460'
+0000102A=                           21  result      dc.l    ''
+0000102A                            22  
+0000102A                            23      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+LOGIN               1022
+RESULT              102A
+START               1000

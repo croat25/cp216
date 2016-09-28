@@ -1,0 +1,179 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 2/6/2016 8:08:14 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a4q2
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000  4207                       9  loop            clr.b   d7
+00001002                            10             
+00001002  4241                      11              clr     d1
+00001004  4240                      12              clr     d0
+00001006  43F9 0000114D             13              lea     entry,a1
+0000100C  4EB9 00001138             14              jsr     msg2
+00001012  4EB9 00001124             15              jsr     p_crlf
+00001018  1E39 0000114C             16              move.b  range,d7
+0000101E  45F9 0000114B             17              lea     string,a2
+00001024                            18              
+00001024                            19              
+00001024  4EB9 000010E8             20              jsr     read1ch
+0000102A  4EB9 00001124             21              jsr     p_crlf
+00001030  B23C 0023                 22              cmp.b   #35,d1
+00001034  6700 0092                 23              beq     end
+00001038  B23C 002F                 24              cmp.b   #47,d1
+0000103C  6F00 0032                 25              ble     otheryo
+00001040  B23C 0039                 26              cmp.b   #57,d1
+00001044  6F00 0040                 27              ble     numberyo
+00001048  B23C 0041                 28              cmp.b   #65,d1
+0000104C  6F00 0022                 29              ble     otheryo
+00001050  B23C 005A                 30              cmp.b   #90,d1
+00001054  6F00 0046                 31              ble     upperyo
+00001058  B23C 0060                 32              cmp.b   #96,d1
+0000105C  6F00 0012                 33              ble     otheryo
+00001060  B23C 007A                 34              cmp.b   #122,d1
+00001064  6F00 004C                 35              ble     loweryo
+00001068  B23C 007E                 36              cmp.b   #126,d1
+0000106C  6F00 0002                 37              ble     otheryo
+00001070                            38              
+00001070                            39              
+00001070  43F9 000011D9             40  otheryo     lea     otherp,a1
+00001076  4EB9 00001124             41              jsr     p_crlf
+0000107C  4EB9 000010FA             42              jsr     p_str
+00001082                            43              
+00001082  6000 FF7C                 44              bra     loop
+00001086  43F9 000011C0             45  numberyo    lea     numberp,a1
+0000108C  4EB9 000010FA             46              jsr     p_str
+00001092  4EB9 00001124             47              jsr     p_crlf
+00001098  6000 FF66                 48              bra     loop
+0000109C                            49  
+0000109C  43F9 00001191             50  upperyo     lea     upperp,a1
+000010A2  4EB9 000010FA             51              jsr     p_str
+000010A8  4EB9 00001124             52              jsr     p_crlf
+000010AE  6000 FF50                 53              bra     loop
+000010B2                            54  
+000010B2  43F9 000011A9             55  loweryo     lea     lowerp,a1
+000010B8  4EB9 000010FA             56              jsr     p_str
+000010BE  4EB9 00001124             57              jsr     p_crlf
+000010C4  6000 FF3A                 58              bra     loop       
+000010C8                            59              
+000010C8                            60              
+000010C8                            61              
+000010C8                            62              
+000010C8                            63              
+000010C8  4E72 2700                 64  end         stop        #$2700
+000010CC                            65              include 'io_util.x68'
+000010CC  48E7 8000                 66  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+000010D0  7012                      67      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+000010D2  4E4F                      68      TRAP    #15
+000010D4  4CDF 0001                 69      MOVEM.L (SP)+,D0    Restore D0
+000010D8  4E75                      70      RTS
+000010DA                            71  
+000010DA  48E7 8000                 72  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+000010DE  7011                      73      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+000010E0  4E4F                      74      TRAP    #15 Print the number
+000010E2  4CDF 0001                 75      MOVEM.L (SP)+,D0    Restore D0
+000010E6  4E75                      76      RTS
+000010E8  7005                      77  read1ch   moveq.l #5,d0
+000010EA                            78                              
+000010EA  4E4F                      79            trap    #15
+000010EC                            80          
+000010EC  4E75                      81            rts
+000010EE                            82            
+000010EE                            83            
+000010EE  7004                      84  readnum moveq.l   #4,d0
+000010F0  4E4F                      85          trap      #15
+000010F2  4E75                      86          rts
+000010F4  700C                      87  echo    moveq.l #12,d0
+000010F6  4E4F                      88          trap    #15
+000010F8  4E75                      89          rts 
+000010FA  48E7 8000                 90  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+000010FE  700D                      91      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+00001100  4E4F                      92      TRAP    #15 Print the string
+00001102  4CDF 0001                 93      MOVEM.L (SP)+,D0    Restore D0
+00001106  4E75                      94      RTS
+00001108  48E7 8000                 95  displayto       MOVEM.L D0,-(SP)    Preserve D0
+0000110C  700E                      96      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+0000110E  4E4F                      97      TRAP    #15 Print the string
+00001110  4CDF 0001                 98      MOVEM.L (SP)+,D0    Restore D0
+00001114  4E75                      99      RTS
+00001116                           100      
+00001116  48E7 8000                101  readkeyboard    MOVEM.L D0,-(SP)    Preserve D0
+0000111A  7002                     102      MOVEQ   #2,D0   Set up to print string at A1 with CR/LF
+0000111C  4E4F                     103      TRAP    #15 Print the string
+0000111E  4CDF 0001                104      MOVEM.L (SP)+,D0    Restore D0
+00001122  4E75                     105      RTS
+00001124  48E7 8040                106  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+00001128  700D                     107      MOVEQ.L #13,D0  Set up print with CRLF
+0000112A  43F9 0000114A            108      LEA NULL,A1 Set null string
+00001130  4E4F                     109      TRAP    #15
+00001132  4CDF 0201                110      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+00001136  4E75                     111      RTS
+00001138                           112      
+00001138  700E                     113  msg2    moveq.l #14,d0
+0000113A  4E4F                     114          trap    #15
+0000113C  4E75                     115          rts 
+0000113E  700D                     116  msg13    moveq.l #13,d0
+00001140  4E4F                     117          trap    #15
+00001142  4E75                     118          rts        
+00001144  7004                     119  msg3    moveq.l #4,d0
+00001146  4E4F                     120          trap    #15
+00001148  4E75                     121          rts         
+0000114A                           122  
+0000114A= 00                       123  NULL    DC.B    0   Empty string
+0000114B                           124  
+0000114B                           125  
+0000114B                           126  
+0000114B                           127  
+0000114B                           128  
+0000114B                           129  
+0000114B                           130  
+0000114B                           131  -------------------- end include --------------------
+0000114B                           132  * Put variables and constants here
+0000114B= 01                       133  string      dc.b    1
+0000114C= 00                       134  range       dc.b    0
+0000114D= 65 6E 74 65 72 20 ...    135  entry       dc.b    'enter in a character swag or # to stop cause thats the twitter life',0
+00001191= 69 74 73 20 61 6E ...    136  upperp      dc.b    'its an uppercase letter',0
+000011A9= 69 74 73 20 61 20 ...    137  lowerp      dc.b    'its a lowercase letter',0
+000011C0= 61 20 6E 75 6D 62 ...    138  numberp     dc.b    'a number has been choose',0
+000011D9= 73 6F 6D 65 74 68 ...    139  otherp      dc.b    'something crazy like mr.potato ',0
+000011F9                           140      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DISPLAYTO           1108
+ECHO                10F4
+END                 10C8
+ENTRY               114D
+LOOP                1000
+LOWERP              11A9
+LOWERYO             10B2
+MSG13               113E
+MSG2                1138
+MSG3                1144
+NULL                114A
+NUMBERP             11C0
+NUMBERYO            1086
+OTHERP              11D9
+OTHERYO             1070
+P_CRLF              1124
+P_NUM               10DA
+P_PRMPT             10CC
+P_STR               10FA
+RANGE               114C
+READ1CH             10E8
+READKEYBOARD        1116
+READNUM             10EE
+START               1000
+STRING              114B
+UPPERP              1191
+UPPERYO             109C

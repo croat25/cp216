@@ -1,0 +1,37 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 1/29/2016 6:40:17 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :q3
+00000000                             3  * Written by :bruno salapi
+00000000                             4  * Date       :idk
+00000000                             5  * Description:q3
+00000000                             6  *-----------------------------------------------------------
+00000000  =00E00010                  7  leds    equ $e00010             ;things being iniaitate
+00000000  =00E00014                  8  button    equ $e00014
+00000000                             9          
+00001000                            10  START:  ORG    $1000                ; first instruction of program
+00001000  4679 00E00014             11  top       not button                
+00001006                            12          
+00001006  13F9 00E00014 00E00010    13          move.b  button,leds         ; buttons to leds display
+00001010                            14         
+00001010  60EE                      15          bra     top         ; that branch lyfe
+00001012                            16  
+00001012  FFFF FFFF                 17      SIMHALT             ; halt simulator
+00001016                            18  
+00001016                            19  * Put variables and constants here
+00001016                            20  
+00001016                            21      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BUTTON              E00014
+LEDS                E00010
+START               1000
+TOP                 1000

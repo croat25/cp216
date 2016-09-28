@@ -1,0 +1,193 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 2/12/2016 7:11:04 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a5q2
+00000000                             3  * Written by :bruno salapic
+00000000                             4  * Date       :some feburary thing
+00000000                             5  * Description:idk
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000  41F9 000011A4              9          lea     count1,a0
+00001006  43F9 00001130             10          lea     words1,a1
+0000100C  4EB9 00001042             11          jsr     getwords
+00001012  4245                      12          clr     d5
+00001014  4244                      13          clr     d4
+00001016  41F9 000011A6             14          lea     count2,a0               ; load addresss
+0000101C  43F9 00001144             15          lea     words2,a1
+00001022  4EB9 00001042             16          jsr     getwords
+00001028  4245                      17          clr     d5
+0000102A  4244                      18          clr     d4
+0000102C  41F9 000011A8             19          lea     count3,a0
+00001032  43F9 00001158             20          lea     words3,a1
+00001038  4EB9 00001042             21          jsr     getwords
+0000103E  6000 0042                 22          bra     end
+00001042                            23          
+00001042                            24         
+00001042                            25          
+00001042                            26          
+00001042  48E7 0040                 27  getwords    movem.l a1,-(sp)
+00001046  43F9 0000116C             28              lea     entry,a1            ; swag points
+0000104C  4EB9 000010B0             29              jsr     p_str
+00001052  383C 0009                 30              move    #9,d4
+00001056                            31             
+00001056  4CDF 0200                 32              movem.l (sp)+,a1
+0000105A                            33              
+0000105A                            34  
+0000105A  4EB9 00001124             35  loop        jsr     msg2                        get stuff 
+00001060  4A01                      36              tst.b   d1
+00001062  6700 000A                 37              beq     next
+00001066  5245                      38              add     #1,d5
+00001068  D2C1                      39              add     d1,a1
+0000106A  51CC FFEE                 40              dbra    d4,loop  
+0000106E  3085                      41  next        move    d5,(a0)                     ; return how many in list
+00001070  3805                      42              move    d5,d4
+00001072  3204                      43              move    d4,d1
+00001074  43F9 00001197             44              lea     there,a1
+0000107A  4EB9 000010A2             45              jsr     p_num
+00001080                            46              
+00001080                            47               
+00001080  4E75                      48          rts
+00001082                            49  
+00001082                            50                             
+00001082                            51                  
+00001082                            52          
+00001082                            53          
+00001082                            54  
+00001082  FFFF FFFF                 55  end    SIMHALT             ; halt simulator
+00001086                            56          include     'io_util.x68'
+00001086  48E7 8000                 57  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+0000108A  7012                      58      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+0000108C  4E4F                      59      TRAP    #15
+0000108E  4CDF 0001                 60      MOVEM.L (SP)+,D0    Restore D0
+00001092  4E75                      61      RTS
+00001094  48E7 8000                 62  P_PRMPT2    MOVEM.L D0,-(SP)    Preserve D0
+00001098  700E                      63      MOVEQ.L #14,D0  Set up prompt and read number into D1.L
+0000109A  4E4F                      64      TRAP    #15
+0000109C  4CDF 0001                 65      MOVEM.L (SP)+,D0    Restore D0
+000010A0  4E75                      66      RTS
+000010A2  48E7 8000                 67  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+000010A6  7011                      68      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+000010A8  4E4F                      69      TRAP    #15 Print the number
+000010AA  4CDF 0001                 70      MOVEM.L (SP)+,D0    Restore D0
+000010AE  4E75                      71      RTS
+000010B0                            72      
+000010B0  48E7 8000                 73  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+000010B4  700D                      74      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+000010B6  4E4F                      75      TRAP    #15 Print the string
+000010B8  4CDF 0001                 76      MOVEM.L (SP)+,D0    Restore D0
+000010BC  4E75                      77      RTS
+000010BE  48E7 8000                 78  P_STR2  MOVEM.L D0,-(SP)    Preserve D0
+000010C2  700E                      79      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+000010C4  4E4F                      80      TRAP    #15 Print the string
+000010C6  4CDF 0001                 81      MOVEM.L (SP)+,D0    Restore D0
+000010CA  4E75                      82      RTS
+000010CC  48E7 0040                 83  P_CRLF2 MOVEM.L A1,-(SP)    Preserve D0 and A1
+000010D0  700D                      84      MOVEQ.L #13,D0  Set up print with CRLF
+000010D2  43F9 000010E0             85      LEA NULL,A1 Set null string
+000010D8  4E4F                      86      TRAP    #15
+000010DA  4CDF 0200                 87      MOVEM.L (SP)+,A1    Restore D0 and A1
+000010DE  4E75                      88      RTS
+000010E0                            89  
+000010E0= 00                        90  NULL    DC.B    0   Empty string
+000010E1                            91  
+000010E2  48E7 8040                 92  dischar movem.l d0/a1,-(sp)
+000010E6  7006                      93          moveq.l #6,d0
+000010E8  4E4F                      94          trap    #15
+000010EA  4CDF 0201                 95          movem.l (sp)+,d0/a1
+000010EE  4E75                      96          rts
+000010F0  48E7 8040                 97  pmsg        movem.l d0/a1,-(sp)
+000010F4  700E                      98              moveq.l #14,d0
+000010F6  4E4F                      99              trap    #15
+000010F8  4CDF 0201                100              movem.l (sp)+,d0/a1
+000010FC  4E75                     101              rts    
+000010FE  48E7 8040                102  readchar movem.l d0/a1,-(sp)
+00001102  7005                     103          moveq.l #5,d0
+00001104  4E4F                     104          trap    #15
+00001106  4CDF 0201                105          movem.l (sp)+,d0/a1
+0000110A  4E75                     106          rts
+0000110C  7005                     107  readchar2 moveq.l   #5,d0
+0000110E  4E4F                     108            trap      #15
+00001110  4E75                     109            rts
+00001112  7006                     110  displaychar moveq   #6,d0
+00001114  4E4F                     111              trap    #15
+00001116  4E75                     112              rts
+00001118                           113            
+00001118  7002                     114  readstr moveq.l     #2,d0
+0000111A  4E4F                     115            trap      #15
+0000111C  4E75                     116            rts          
+0000111E  7004                     117  readnum moveq.l   #4,d0
+00001120  4E4F                     118            trap      #15
+00001122  4E75                     119            rts
+00001124  7002                     120  msg2    moveq.l #2,d0
+00001126  4E4F                     121          trap    #15
+00001128  4E75                     122          rts  
+0000112A                           123          
+0000112A  700C                     124  echo    moveq.l #12,d0
+0000112C  4E4F                     125          trap    #15
+0000112E  4E75                     126          rts
+00001130                           127  
+00001130                           128  
+00001130                           129  
+00001130                           130  
+00001130                           131  
+00001130                           132  
+00001130                           133  
+00001130                           134  
+00001130                           135  
+00001130                           136  
+00001130                           137  
+00001130                           138  
+00001130                           139  
+00001130                           140  
+00001130                           141  
+00001130                           142  -------------------- end include --------------------
+00001130                           143  * Put variables and constants here
+00001130                           144  words1      ds.w    10
+00001144                           145  words2      ds.w    10
+00001158                           146  words3      ds.w    10
+0000116C= 65 6E 74 65 72 20 ...    147  entry        dc.b    'enter in words like u never done it before',0
+00001197= 74 68 65 72 65 20 ...    148  there       dc.b    'there are : ',0
+000011A4                           149  count1      ds.w    1
+000011A6                           150  count2      ds.w    1
+000011A8                           151  count3      ds.w    1
+000011AA                           152      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+COUNT1              11A4
+COUNT2              11A6
+COUNT3              11A8
+DISCHAR             10E2
+DISPLAYCHAR         1112
+ECHO                112A
+END                 1082
+ENTRY               116C
+GETWORDS            1042
+LOOP                105A
+MSG2                1124
+NEXT                106E
+NULL                10E0
+PMSG                10F0
+P_CRLF2             10CC
+P_NUM               10A2
+P_PRMPT             1086
+P_PRMPT2            1094
+P_STR               10B0
+P_STR2              10BE
+READCHAR            10FE
+READCHAR2           110C
+READNUM             111E
+READSTR             1118
+START               1000
+THERE               1197
+WORDS1              1130
+WORDS2              1144
+WORDS3              1158

@@ -1,0 +1,60 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/15/2016 3:35:28 PM
+
+00000000                             1  
+00000000                             2  *-----------------------------------------------------------
+00000000                             3  * Program    : Assignment #1 base program
+00000000                             4  * Written by : Dr. Nora Znotinas
+00000000                             5  * Description: subtract two numbers
+00000000                             6  * Input: num1, num2
+00000000                             7  * Output: answer
+00000000                             8  * Registers: D0, D1 - store input so num1/2 not trashed
+00000000                             9  *-----------------------------------------------------------
+00001000                            10  START   ORG     $1000
+00001000                            11  
+00001000                            12  
+00001000  1039 0000104E             13          MOVE.b  num1,D0         ;get first value
+00001006  4600                      14          not.b   d0
+00001008  13C0 00001050             15          move.b  d0,answer
+0000100E                            16          
+0000100E                            17  
+0000100E  1039 0000104E             18          MOVE.b  num1,D0   
+00001014  1239 0000104F             19          MOVE.b   num2,D1 ;get second value
+0000101A  C200                      20          and.b   d0,d1
+0000101C  13C1 00001051             21          move.b  d1,ans2
+00001022                            22          
+00001022  1039 0000104E             23          MOVE.b  num1,D0   
+00001028  1239 0000104F             24          MOVE.b   num2,D1 ;get second value
+0000102E  8200                      25          or.b    d0,d1
+00001030  13C1 00001052             26          move.b  d1,ans3
+00001036                            27          
+00001036  1039 0000104E             28          MOVE.b  num1,D0   
+0000103C  1239 0000104F             29          MOVE.b   num2,D1 ;get second value
+00001042  B101                      30          eor.b    d0,d1
+00001044  13C1 00001053             31          move.b  d1,ans4
+0000104A                            32                ; and store result
+0000104A  4E72 2700                 33          STOP    #$2700
+0000104E                            34          
+0000104E= 01                        35  num1    DC.b    $1
+0000104F= 04                        36  num2    DC.b    $4
+00001050                            37  answer  DS.b    1
+00001051                            38  ans2    ds.b    1
+00001052                            39  ans3    ds.b    1
+00001053                            40  ans4    ds.b    1
+00001054                            41          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ANS2                1051
+ANS3                1052
+ANS4                1053
+ANSWER              1050
+NUM1                104E
+NUM2                104F
+START               1000

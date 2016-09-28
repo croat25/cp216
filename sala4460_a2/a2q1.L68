@@ -1,0 +1,60 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/22/2016 8:09:29 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a2q1
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/01/19
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  
+00001000  1039 0000103A             10              move.b  num1,d0
+00001006  1239 0000103B             11              move.b  num2,d1
+0000100C  1439 0000103C             12              move.b  num3,d2
+00001012  1639 0000103D             13              move.b  num4,d3
+00001018                            14              
+00001018  9200                      15              sub.b   d0,d1
+0000101A  13C1 0000103E             16              move.b  d1,result
+00001020                            17              
+00001020  1239 0000103B             18              move.b  num2,d1
+00001026                            19              
+00001026  9401                      20              sub.b   d1,d2
+00001028  13C2 0000103F             21              move.b  d2,result2
+0000102E                            22              
+0000102E                            23             
+0000102E                            24              
+0000102E  9600                      25              sub.b   d0,d3
+00001030  13C3 00001040             26              move.b  d3,result3
+00001036                            27  
+00001036  4E72 2700                 28              stop        #$2700
+0000103A                            29  
+0000103A                            30  * Put variables and constants here
+0000103A                            31  
+0000103A= 25                        32  num1    dc.b        $25
+0000103B= 55                        33  num2    dc.b        $55
+0000103C= 32                        34  num3    dc.b        $32
+0000103D= 25                        35  num4    dc.b        $25
+0000103E                            36  result  ds.b        1
+0000103F                            37  result2  ds.b       1
+00001040                            38  result3  ds.b       1
+00001041                            39  
+00001041                            40      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+NUM1                103A
+NUM2                103B
+NUM3                103C
+NUM4                103D
+RESULT              103E
+RESULT2             103F
+RESULT3             1040
+START               1000

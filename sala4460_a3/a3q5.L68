@@ -1,0 +1,155 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 1/29/2016 6:40:38 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :bruno salapic 
+00000000                             3  * Written by :a3q5
+00000000                             4  * Date       :idk
+00000000                             5  * Description:q5 its in the assigments
+00000000                             6  *-----------------------------------------------------------
+00000000  =00E00010                  7  leds    equ $e00010
+00000000  =00E00012                  8  switch  equ $e00012             ; setting my hardware not software
+00000000  =00E00014                  9  butt    equ $e00014
+00000000                            10      
+00001000                            11          ORG    $1000
+00001000                            12  START:                  ; first instruction of program
+00001000                            13  
+00001000  13FC 0000 00E00010        14  top        move.b  #$00,leds        ; setting leds to zero
+00001008                            15          
+00001008                            16          
+00001008  0C39 00FE 00E00014        17  potato        cmp.b     #%11111110,butt     ; seeeing if buttons are pushed
+00001010  6700 0026                 18          beq        brakelight
+00001014                            19          
+00001014                            20          
+00001014  0C39 0001 00E00012        21          cmp.b   #%00000001,switch
+0000101C  6700 0084                 22          beq     rightturn
+00001020                            23                                          ; if buttons are pushed do stuff
+00001020  0C39 0002 00E00012        24          cmp.b   #%00000010,switch
+00001028  6700 001A                 25          beq     leftturn
+0000102C  0C39 0000 00E00012        26          cmp.b   #%00000000,switch
+00001034  67CA                      27          beq     top    
+00001036  60D0                      28          bra     potato
+00001038  13FC 00E7 00E00010        29  brakelight  move.b  #%11100111,leds
+00001040  4E71                      30              nop                         ;brake light
+00001042  60C4                      31              bra     potato
+00001044                            32              
+00001044  0C39 00FE 00E00014        33  leftturn    cmp.b       #%11111110,butt
+0000104C  6700 00F8                 34              beq         rightplusbrake      ;left turn without brake
+00001050  13FC 0004 00E00010        35              move.b    #%00000100,leds
+00001058  263C 0031FFFF             36              move.l  #$31ffff,d3             
+0000105E  5383                      37  loop        sub.l   #$1,d3
+00001060  66FC                      38              bne     loop
+00001062  0C39 00FE 00E00014        39              cmp.b       #%11111110,butt
+0000106A  6700 00DA                 40              beq         rightplusbrake      ;hardcoded  pretty much
+0000106E  13FC 0006 00E00010        41              move.b  #%00000110,leds         ; idk how to do it anyother way
+00001076  263C 0031FFFF             42              move.l  #$31ffff,d3             
+0000107C  5383                      43  loop2        sub.l   #$1,d3
+0000107E  66FC                      44              bne     loop2
+00001080  13FC 0007 00E00010        45              move.b  #%00000111,leds
+00001088  263C 0031FFFF             46              move.l  #$31ffff,d3             
+0000108E  5383                      47  loop3        sub.l   #$1,d3
+00001090  66FC                      48              bne     loop3
+00001092                            49              
+00001092  0C39 00FE 00E00014        50              cmp.b   #%11111110,butt
+0000109A  6700 0070                 51              beq     leftplusbrake            
+0000109E  6000 FF68                 52              bra     potato
+000010A2                            53  
+000010A2                            54  
+000010A2  0C39 00FE 00E00014        55  rightturn   cmp.b       #%11111110,butt
+000010AA  6700 009A                 56              beq         rightplusbrake
+000010AE  13FC 0020 00E00010        57              move.b    #%00100000,leds
+000010B6  243C 0031FFFF             58              move.l  #$31ffff,d2             
+000010BC  5382                      59  loop4        sub.l   #$1,d2                     ;same thing as above but for rightwith no lights
+000010BE  66FC                      60              bne     loop4
+000010C0  0C39 00FE 00E00014        61              cmp.b       #%11111110,butt
+000010C8  6700 007C                 62              beq         rightplusbrake
+000010CC  13FC 0060 00E00010        63              move.b  #%01100000,leds
+000010D4  243C 0031FFFF             64              move.l  #$31ffff,d2             
+000010DA  5382                      65  loop5        sub.l   #$1,d2
+000010DC  66FC                      66              bne     loop5
+000010DE  0C39 00FE 00E00014        67              cmp.b       #%11111110,butt
+000010E6  6700 005E                 68              beq         rightplusbrake
+000010EA  13FC 00E0 00E00010        69              move.b  #%11100000,leds
+000010F2  243C 0031FFFF             70              move.l  #$31ffff,d2             
+000010F8  5382                      71  loop6        sub.l   #$1,d2
+000010FA  66FC                      72              bne     loop6
+000010FC  0C39 00FE 00E00014        73              cmp.b   #%11111110,butt
+00001104  6700 0040                 74              beq     rightplusbrake 
+00001108  6000 FEFE                 75              bra     potato
+0000110C                            76              
+0000110C                            77              
+0000110C                            78              
+0000110C  13FC 00E4 00E00010        79  leftplusbrake    move.b    #%11100100,leds
+00001114  263C 0031FFFF             80              move.l  #$31ffff,d3             
+0000111A  5383                      81  loop7        sub.l   #$1,d3
+0000111C  66FC                      82              bne     loop7
+0000111E  13FC 00E6 00E00010        83              move.b  #%11100110,leds
+00001126  263C 0031FFFF             84              move.l  #$31ffff,d3             
+0000112C  5383                      85  loop8        sub.l   #$1,d3
+0000112E  66FC                      86              bne     loop8               ;left with brakes active
+00001130  13FC 00E7 00E00010        87              move.b  #%11100111,leds
+00001138  263C 0031FFFF             88              move.l  #$31ffff,d3             
+0000113E  5383                      89  loop9        sub.l   #$1,d3
+00001140  66FC                      90              bne     loop9
+00001142                            91                         
+00001142  6000 FF00                 92              bra     leftturn
+00001146                            93  
+00001146  13FC 0027 00E00010        94  rightplusbrake    move.b    #%00100111,leds
+0000114E  263C 0031FFFF             95              move.l  #$31ffff,d3             
+00001154  5383                      96  loop10        sub.l   #$1,d3
+00001156  66FC                      97              bne     loop10
+00001158  13FC 0067 00E00010        98              move.b  #%01100111,leds
+00001160  263C 0031FFFF             99              move.l  #$31ffff,d3             
+00001166  5383                     100  loop11        sub.l   #$1,d3
+00001168  66FC                     101              bne     loop11
+0000116A  13FC 00E7 00E00010       102              move.b  #%11100111,leds
+00001172  263C 0031FFFF            103              move.l  #$31ffff,d3             
+00001178  5383                     104  loop12        sub.l   #$1,d3
+0000117A  66FC                     105              bne     loop12              ;right with brakes active
+0000117C                           106                         
+0000117C  6000 FF24                107              bra     rightturn
+00001180                           108  
+00001180                           109        
+00001180  FFFF FFFF                110      SIMHALT             ; halt simulator
+00001184                           111  
+00001184                           112  * Put variables and constants here
+00001184= 04                       113  left    dc.b    %00000100
+00001185= 01                       114  right   dc.b    %00000001
+00001186= 02                       115  brake   dc.b    %00000010           ; those this ©¨
+00001187                           116  
+00001187                           117      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BRAKE               1186
+BRAKELIGHT          1038
+BUTT                E00014
+LEDS                E00010
+LEFT                1184
+LEFTPLUSBRAKE       110C
+LEFTTURN            1044
+LOOP                105E
+LOOP10              1154
+LOOP11              1166
+LOOP12              1178
+LOOP2               107C
+LOOP3               108E
+LOOP4               10BC
+LOOP5               10DA
+LOOP6               10F8
+LOOP7               111A
+LOOP8               112C
+LOOP9               113E
+POTATO              1008
+RIGHT               1185
+RIGHTPLUSBRAKE      1146
+RIGHTTURN           10A2
+START               1000
+SWITCH              E00012
+TOP                 1000

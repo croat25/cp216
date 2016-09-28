@@ -1,0 +1,106 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 4/8/2016 6:37:17 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a2q4
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000  1039 00001124              9              move.b  input,d0
+00001006  1239 00001126             10              move.b  input+2,d1
+0000100C  1439 00001128             11              move.b  input+4,d2
+00001012  1639 0000112A             12              move.b  input+6,d3
+00001018                            13              
+00001018  13C0 0000112C             14              move.b  d0,first
+0000101E  13C1 0000112D             15              move.b  d1,first+1
+00001024  13C2 0000112E             16              move.b  d2,first+2
+0000102A  13C3 0000112F             17              move.b  d3,first+3
+00001030                            18              
+00001030  1039 00001125             19              move.b  input+1,d0
+00001036  1239 00001127             20              move.b  input+3,d1
+0000103C  1439 00001129             21              move.b  input+5,d2
+00001042  1639 0000112B             22              move.b  input+7,d3
+00001048                            23              
+00001048  13C0 000011AC             24              move.b  d0,sec
+0000104E  13C1 000011AD             25              move.b  d1,sec+1
+00001054  13C2 000011AE             26              move.b  d2,sec+2
+0000105A  13C3 000011AF             27              move.b  d3,sec+3
+00001060                            28              
+00001060  1039 0000122C             29              move.b  input1,d0
+00001066  1239 0000122E             30              move.b  input1+2,d1
+0000106C  1439 00001230             31              move.b  input1+4,d2
+00001072  1639 00001232             32              move.b  input1+6,d3
+00001078                            33              
+00001078  13C0 00001234             34              move.b  d0,first1
+0000107E  13C1 00001235             35              move.b  d1,first1+1
+00001084  13C2 00001236             36              move.b  d2,first1+2
+0000108A  13C3 00001237             37              move.b  d3,first1+3
+00001090                            38              
+00001090  1039 0000122D             39              move.b  input1+1,d0
+00001096  1239 0000122F             40              move.b  input1+3,d1
+0000109C  1439 00001231             41              move.b  input1+5,d2
+000010A2  1639 00001233             42              move.b  input1+7,d3
+000010A8                            43              
+000010A8  13C0 000012B4             44              move.b  d0,sec1
+000010AE  13C1 000012B5             45              move.b  d1,sec1+1
+000010B4  13C2 000012B6             46              move.b  d2,sec1+2
+000010BA  13C3 000012B7             47              move.b  d3,sec1+3
+000010C0                            48              
+000010C0  1039 00001334             49              move.b  input2,d0
+000010C6  1239 00001336             50              move.b  input2+2,d1
+000010CC  1439 00001338             51              move.b  input2+4,d2
+000010D2  1639 0000133A             52              move.b  input2+6,d3
+000010D8                            53              
+000010D8  13C0 0000133C             54              move.b  d0,first2
+000010DE  13C1 0000133D             55              move.b  d1,first2+1
+000010E4  13C2 0000133E             56              move.b  d2,first2+2
+000010EA  13C3 0000133F             57              move.b  d3,first2+3
+000010F0                            58              
+000010F0  1039 00001335             59              move.b  input2+1,d0
+000010F6  1239 00001337             60              move.b  input2+3,d1
+000010FC  1439 00001339             61              move.b  input2+5,d2
+00001102  1639 0000133B             62              move.b  input2+7,d3
+00001108                            63              
+00001108  13C0 000013BC             64              move.b  d0,sec2
+0000110E  13C1 000013BD             65              move.b  d1,sec2+1
+00001114  13C2 000013BE             66              move.b  d2,sec2+2
+0000111A  13C3 000013BF             67              move.b  d3,sec2+3
+00001120                            68              
+00001120  4E72 2700                 69              stop        #$2700
+00001124                            70  
+00001124                            71  * Put variables and constants here
+00001124                            72  
+00001124= 46655261 45734479         73  input   dc.l    'FeRaEsDy'
+0000112C                            74  first   ds.l    ' '
+000011AC                            75  sec     ds.l    ' '
+0000122C                            76  
+0000122C= 46 65 52 61 45 73 ...     77  input1   dc.b    'F',$65,'R',$61,'E',$73,'D',$79
+00001234                            78  first1   ds.l    ' '
+000012B4                            79  sec1     ds.l    ' '
+00001334= 46 65 52 61 20 73 ...     80  input2   dc.b    'F',$65,'R',$61,' ',$73,'D',$79
+0000133C                            81  first2   ds.l    ' '
+000013BC                            82  sec2     ds.l    ' '
+0000143C                            83  
+0000143C                            84      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+FIRST               112C
+FIRST1              1234
+FIRST2              133C
+INPUT               1124
+INPUT1              122C
+INPUT2              1334
+SEC                 11AC
+SEC1                12B4
+SEC2                13BC
+START               1000

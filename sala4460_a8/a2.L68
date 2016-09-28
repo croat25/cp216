@@ -1,0 +1,289 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/13/2016 7:31:56 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a8q2
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/mar/13
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  beginning
+00001000                            10  
+00001000                            11  try
+00001000  4241                      12  startover            clr      d1
+00001002  4242                      13              clr     d2
+00001004  4243                      14              clr     d3
+00001006  4244                      15              clr     d4
+00001008  4245                      16              clr     d5
+0000100A  4246                      17              clr     d6
+0000100C                            18               
+0000100C                            19              
+0000100C                            20              
+0000100C                            21              
+0000100C                            22              
+0000100C  43F9 00001A04             23        lea     printstr,a1
+00001012  4EB9 00001190             24              jsr     p_strnr
+00001018  4EB9 000011BA             25              jsr     p_rstr
+0000101E                            26              
+0000101E  3801                      27              move    d1,d4
+00001020  B87C 0000                 28              cmp     #0,d4
+00001024  6700 0060                 29              beq     end
+00001028  5344                      30              sub     #1,d4
+0000102A  43F9 00001A15             31              lea     startposition,a1
+00001030  4EB9 00001190             32              jsr     p_strnr
+00001036  4EB9 000011AC             33              jsr     readnum
+0000103C  1401                      34              move.b      d1,d2
+0000103E  5342                      35              sub     #1,d2
+00001040  43F9 00001A46             36              lea     endposition,a1
+00001046  4EB9 00001190             37              JSR     p_strnr
+0000104C  4EB9 000011AC             38              jsr     readnum
+00001052  3601                      39              move    d1,d3
+00001054  5343                      40              sub     #1,d3
+00001056  B843                      41              cmp     d3,d4
+00001058                            42              
+00001058  6D00 0098                 43              blt     error3
+0000105C                            44              
+0000105C                            45              
+0000105C  4EB9 00001094             46               jsr      rot13
+00001062= 0100                      47               dc.w   256
+00001064= 000011F8                  48               dc.l   list
+00001068= 000015F8                  49               dc.l   counter
+0000106C                            50               
+0000106C  4EB9 000010AA             51               jsr        rot13forreal
+00001072                            52                   
+00001072  3205                      53  output        move    d5,d1
+00001074  7006                      54             moveq   #6,d0
+00001076  4E4F                      55             trap    #15
+00001078  5344                      56             sub      #1,d4
+0000107A  B87C 0000                 57             cmp      #0,d4
+0000107E  6600 002A                 58             bne      next
+00001082                            59             
+00001082  6000 0002                 60             bra    end
+00001086                            61  
+00001086  4E72 2700                 62  end         stop    #$2700
+0000108A                            63  
+0000108A  0645 000D                 64  nextsub     add     #13,d5
+0000108E  0445 000D                 65              sub     #13,d5
+00001092  4E75                      66               rts
+00001094                            67  
+00001094                            68  rot13
+00001094                            69              
+00001094  48E7 0118                 70              movem.l     d7/a3/a4,-(sp)
+00001098  246F 0010                 71              movea.l     16(sp),a2
+0000109C  3E1A                      72              move.w          (a2)+,d7
+0000109E  265A                      73              movea.l      (a2)+,a3
+000010A0  285A                      74              movea.l     (a2)+,a4
+000010A2                            75              
+000010A2  4EB9 00001144             76              jsr     nexttocodestream
+000010A8  4E75                      77              rts
+000010AA                            78  
+000010AA                            79  rot13forreal            
+000010AA                            80  next        
+000010AA  3257                      81              move    (sp),a1    
+000010AC  1A19                      82              move.b  (a1)+,d5
+000010AE                            83             *
+000010AE  B47C 0000                 84              cmp     #0,d2
+000010B2  57CA FFBE                 85              dbeq    d2,output
+000010B6                            86              *
+000010B6  BA7C 0039                 87              cmp     #57,d5
+000010BA  6DB6                      88              blt     output
+000010BC                            89              
+000010BC  BA7C 004E                 90  donttouch   cmp     #78,d5
+000010C0  6D00 0048                 91              blt     lowloop            
+000010C4                            92              
+000010C4  BA7C 005A                 93              cmp     #90,d5
+000010C8  6D00 005A                 94              blt     subtractalpha
+000010CC  BA7C 006E                 95              cmp     #110,d5
+000010D0  6F00 006A                 96              ble     next6
+000010D4                            97  back2            
+000010D4                            98              
+000010D4  BA7C 007A                 99              cmp     #122,d5
+000010D8  6F00 0052                100              ble     subtractbeta
+000010DC  BA7C 007A                101  next222     cmp     #122,d5
+000010E0  6E90                     102              bgt        output
+000010E2  608E                     103              bra     output     
+000010E4                           104  
+000010E4  0445 000D                105  yoloswag    sub     #13,d5
+000010E8  0645 000D                106              add     #13,d5
+000010EC  4EB8 108A                107              jsr     nextsub
+000010F0  4E75                     108              rts
+000010F2                           109  
+000010F2                           110  
+000010F2  43F9 000019F8            111  error3      lea     er1,a1
+000010F8  4EB9 00001190            112              jsr     p_strnr
+000010FE  4EB9 0000117C            113              jsr     p_crlf
+00001104  4240                     114              clr     d0
+00001106  6000 FEF8                115              bra     try
+0000110A                           116  
+0000110A                           117  
+0000110A                           118  
+0000110A  3E3C 000D                119  lowloop     move        #13,d7
+0000110E  BA7C 0041                120  looplow            cmp         #65,d5
+00001112  6700 001E                121              beq         jumptoz
+00001116  5345                     122  back            sub         #1,d5
+00001118  5347                     123              sub         #1,d7
+0000111A  BE7C 0000                124              cmp         #0,d7
+0000111E  6700 FF52                125              beq         output
+00001122  60EA                     126              bra     looplow 
+00001124                           127  
+00001124                           128  
+00001124  0445 000D                129  subtractalpha   sub     #13,d5
+00001128  6000 FF48                130                  bra     output
+0000112C                           131  
+0000112C  0445 000D                132  subtractbeta   sub     #13,d5
+00001130  60AA                     133                  bra     next222
+00001132                           134  
+00001132  3C3C 007A                135  jumptoz    move     #122,d6
+00001136  9C41                     136                  sub     d1,d6
+00001138  D246                     137                  add     d6,d1
+0000113A  60DA                     138                  bra     back
+0000113C  0445 0013                139  next6       sub     #19,d5
+00001140  6000 FF30                140              bra     output
+00001144                           141              
+00001144  609E                     142  nexttocodestream bra    yoloswag
+00001146  48EF 0400 0010           143                  movem.l a2,16(sp)
+0000114C  4CDF 1880                144              movem.l (sp)+,d7/a3/a4
+00001150  4E75                     145              rts            
+00001152                           146                                        
+00001152                           147            include     "io_util.x68"
+00001152  48E7 8000                148  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+00001156  7012                     149      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+00001158  4E4F                     150      TRAP    #15
+0000115A  4CDF 0001                151      MOVEM.L (SP)+,D0    Restore D0
+0000115E  4E75                     152      RTS
+00001160                           153  
+00001160  48E7 8000                154  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+00001164  7011                     155      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+00001166  4E4F                     156      TRAP    #15 Print the number
+00001168  4CDF 0001                157      MOVEM.L (SP)+,D0    Restore D0
+0000116C  4E75                     158      RTS
+0000116E                           159      
+0000116E  48E7 8000                160  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+00001172  700D                     161      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+00001174  4E4F                     162      TRAP    #15 Print the string
+00001176  4CDF 0001                163      MOVEM.L (SP)+,D0    Restore D0
+0000117A  4E75                     164      RTS
+0000117C                           165  
+0000117C  48E7 8040                166  P_CRLF  MOVEM.L D0/A1,-(SP) Preserve D0 and A1
+00001180  700D                     167      MOVEQ.L #13,D0  Set up print with CRLF
+00001182  43F9 000011F6            168      LEA NULL,A1 Set null string
+00001188  4E4F                     169      TRAP    #15
+0000118A  4CDF 0201                170      MOVEM.L (SP)+,D0/A1 Restore D0 and A1
+0000118E  4E75                     171      RTS
+00001190                           172  
+00001190  48E7 8000                173  P_STRNR MOVEM.L D0,-(SP)    Preserve D0
+00001194  700E                     174      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+00001196  4E4F                     175      TRAP    #15 Print the string
+00001198  4CDF 0001                176      MOVEM.L (SP)+,D0    Restore D0
+0000119C  4E75                     177      RTS
+0000119E                           178  
+0000119E  48E7 8000                179  P_CHAR  MOVEM.L D0,-(SP)
+000011A2  7005                     180      MOVEQ.L #5,D0
+000011A4  4E4F                     181      TRAP    #15
+000011A6  4CDF 0001                182      MOVEM.L (SP)+,D0
+000011AA  4E75                     183      RTS
+000011AC                           184      
+000011AC  48E7 8000                185  readnum MOVEM.L D0,-(SP)
+000011B0  7004                     186      MOVEQ.L #4,D0
+000011B2  4E4F                     187      TRAP    #15
+000011B4  4CDF 0001                188      MOVEM.L (SP)+,D0
+000011B8  4E75                     189      RTS
+000011BA                           190  
+000011BA  48E7 8000                191  P_RSTR  MOVEM.L D0,-(SP)    Preserve D0
+000011BE  7002                     192      MOVEQ   #2,D0   Set up to read string into (A1)
+000011C0  4E4F                     193      TRAP    #15 Read the string
+000011C2  4CDF 0001                194      MOVEM.L (SP)+,D0    Restore D0
+000011C6  4E75                     195      RTS
+000011C8                           196  
+000011C8  48E7 C000                197  P_ECHO_ON   MOVEM.L D0-D1,-(SP)
+000011CC                           198  
+000011CC  7201                     199      MOVEQ.L #1,D1
+000011CE  700C                     200      MOVEQ.L #12,D0
+000011D0  4E4F                     201      TRAP    #15
+000011D2                           202  
+000011D2  4CDF 0003                203      MOVEM.L (SP)+,D0-D1
+000011D6  4E75                     204      RTS
+000011D8                           205  
+000011D8  48E7 C000                206  P_ECHO_OFF  MOVEM.L D0-D1,-(SP)
+000011DC                           207  
+000011DC  7200                     208      MOVEQ.L #0,D1
+000011DE  700C                     209      MOVEQ.L #12,D0
+000011E0  4E4F                     210      TRAP    #15
+000011E2                           211  
+000011E2  4CDF 0003                212      MOVEM.L (SP)+,D0-D1
+000011E6  4E75                     213      RTS
+000011E8                           214  
+000011E8  48E7 8000                215  P_DCHAR MOVEM.L D0,-(SP)
+000011EC                           216  
+000011EC  7006                     217      MOVEQ.L #6,D0
+000011EE  4E4F                     218      TRAP    #15
+000011F0                           219  
+000011F0  4CDF 0001                220      MOVEM.L (SP)+,D0
+000011F4  4E75                     221      RTS
+000011F6                           222  
+000011F6= 00                       223  NULL    DC.B    0   * Empty string
+000011F7                           224  
+000011F7                           225  
+000011F7                           226  
+000011F7                           227  
+000011F7                           228  -------------------- end include --------------------
+000011F8                           229  list        ds.l    256
+000015F8                           230  counter     ds.l    256           
+000019F8= 6E 65 77 62 20 65 ...    231  er1         dc.b    'newb error ',0            
+00001A04= 65 6E 74 65 72 20 ...    232  printstr    dc.b    'enter a string: ',0
+00001A15= 65 6E 74 65 72 20 ...    233  startposition   dc.b    'enter were u would like  to start the encryption',0
+00001A46= 65 6E 74 65 72 20 ...    234  endposition     dc.b    'enter in the length of encryption',0
+00001A68                           235  
+00001A68                           236      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BACK                1116
+BACK2               10D4
+BEGINNING           1000
+COUNTER             15F8
+DONTTOUCH           10BC
+END                 1086
+ENDPOSITION         1A46
+ER1                 19F8
+ERROR3              10F2
+JUMPTOZ             1132
+LIST                11F8
+LOOPLOW             110E
+LOWLOOP             110A
+NEXT                10AA
+NEXT222             10DC
+NEXT6               113C
+NEXTSUB             108A
+NEXTTOCODESTREAM    1144
+NULL                11F6
+OUTPUT              1072
+PRINTSTR            1A04
+P_CHAR              119E
+P_CRLF              117C
+P_DCHAR             11E8
+P_ECHO_OFF          11D8
+P_ECHO_ON           11C8
+P_NUM               1160
+P_PRMPT             1152
+P_RSTR              11BA
+P_STR               116E
+P_STRNR             1190
+READNUM             11AC
+ROT13               1094
+ROT13FORREAL        10AA
+START               1000
+STARTOVER           1000
+STARTPOSITION       1A15
+SUBTRACTALPHA       1124
+SUBTRACTBETA        112C
+TRY                 1000
+YOLOSWAG            10E4

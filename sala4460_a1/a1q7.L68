@@ -1,0 +1,50 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/14/2016 6:37:34 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program    : Assignment #1 q5
+00000000                             3  * Written by : Dr. Nora Znotinas
+00000000                             4  * Description: subtract two numbers
+00000000                             5  * Input: num1, num2
+00000000                             6  * Output: answer
+00000000                             7  * Registers: D0, D1 - store input so num1/2 not trashed
+00000000                             8  *-----------------------------------------------------------
+00001000                             9  START   ORG     $1000
+00001000  2039 00001040             10          MOVE.l  num1,D0         ;get first value
+00001006  2239 00001042             11          MOVE.l  num2,D1         ;get second value
+0000100C                            12          
+0000100C  9200                      13          SUb.b  D0,d1           ; subract the numbers
+0000100E  23C1 00001044             14          MOVE.l  D1,answer
+00001014                            15          
+00001014  2439 00001040             16          move.l  num1,d2
+0000101A  2239 00001042             17          move.l  num2,d1
+00001020  9242                      18           SUb.w  D2,D1          ; subract the numbers
+00001022  23C1 00001048             19          MOVE.l  d1,answer2
+00001028                            20          
+00001028  2639 00001040             21          move.l  num1,d3
+0000102E  2239 00001042             22          move.l  num2,d1
+00001034  9283                      23           SUb.l  D3,D1           ; subract the numbers
+00001036  23C1 0000104C             24          MOVE.l  D1,answer3
+0000103C                            25          
+0000103C  4E72 2700                 26          STOP    #$2700
+00001040= 1402                      27  num1    DC.W    $1402
+00001042= 5612                      28  num2    DC.W    $5612
+00001044                            29  answer  DS.l    1
+00001048                            30  answer2  ds.l    1
+0000104C                            31  answer3 ds.l    1
+00001050                            32          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ANSWER              1044
+ANSWER2             1048
+ANSWER3             104C
+NUM1                1040
+NUM2                1042
+START               1000

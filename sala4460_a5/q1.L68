@@ -1,0 +1,228 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 2/12/2016 7:06:00 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :5q1
+00000000                             3  * Written by :bruno sala4460
+00000000                             4  * Date       :feburary something
+00000000                             5  * Description: meh
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000  1C3C 0004                  9          move.b  #4,d6
+00001004  41F9 00001284             10          lea     newlist,a0
+0000100A  45F9 00001274             11          lea     list,a2                         ; load addresses 
+00001010  43F9 000011A8             12  loop    lea     prmpt,a1
+00001016  4EB9 000010FE             13          jsr     p_prmpt
+0000101C  6000 0008                 14          bra     addtolist                   ; prompt user
+00001020  4EB9 00001144             15          jsr     p_crlf2
+00001026                            16  
+00001026  14C1                      17  addtolist      move.b    d1,(a2)+                   ; add to list
+00001028  51CE FFE6                 18              dbra     d6,loop
+0000102C                            19              
+0000102C  43F9 000011D4             20  secondline  lea     prmpt2,a1
+00001032  4EB9 000010FE             21              jsr     p_prmpt                     ; second prompt window
+00001038  4EB9 00001144             22              jsr     p_crlf2
+0000103E  6000 0002                 23              bra     check
+00001042                            24    
+00001042  B23C 0001                 25  check       cmp.b   #1,d1
+00001046  6700 0016                 26              beq     printlist                       
+0000104A  B23C 0002                 27              cmp.b   #2,d1                           ; check wat user wishes to do
+0000104E  6700 0056                 28              beq     timetoadd
+00001052  B23C 0003                 29              cmp.b   #3,d1
+00001056  6700 00A2                 30              beq     end
+0000105A  6000 0036                 31              bra     error
+0000105E                            32          
+0000105E  45F9 00001274             33  printlist   lea     list,a2
+00001064  383C 0003                 34              move    #3,d4                                   ; printing 
+00001068  121A                      35              move.b  (a2)+,d1
+0000106A  43F9 0000128C             36              lea     blank,a1
+00001070  4EB9 0000111A             37              jsr     p_num
+00001076  121A                      38  loop3            move.b  (a2)+,d1
+00001078  43F9 00001289             39              lea     comma,a1
+0000107E  4EB9 0000111A             40              jsr     p_num
+00001084  51CC FFF0                 41              dbra    d4,loop3
+00001088  4244                      42              clr     d4
+0000108A  4EB9 00001144             43              jsr     p_crlf2
+00001090  609A                      44              bra     secondline 
+00001092                            45  
+00001092  43F9 0000125C             46  error     lea     lol,a1
+00001098  4EB9 00001128             47                  jsr     p_str
+0000109E  45F9 00001274             48              lea     list,a2                           ; print error prmopt again
+000010A4  6086                      49                   bra    secondline
+000010A6                            50  
+000010A6  45F9 00001274             51  timetoadd   lea     list,a2
+000010AC  43F9 0000121C             52              lea     howmany,a1
+000010B2  4EB9 000010FE             53              jsr     p_prmpt
+000010B8  BA7C 0005                 54              cmp     #5,d5
+000010BC  6ED4                      55              bgt     error
+000010BE  3A01                      56              move    d1,d5
+000010C0  5345                      57              sub     #1,d5
+000010C2  161A                      58  loopyolo    move.b  (a2)+,d3
+000010C4  D843                      59              add     d3,d4
+000010C6  51CD FFFA                 60              dbra    d5,loopyolo
+000010CA                            61          
+000010CA  B87C 00FF                 62  printingans cmp     #255,d4
+000010CE  6EC2                      63              bgt     error
+000010D0  3204                      64              move    d4,d1
+000010D2  43F9 00001279             65              lea     ans,a1
+000010D8  4EB9 0000111A             66              jsr     p_num
+000010DE  4EB9 00001144             67              jsr     p_crlf2
+000010E4  4244                      68              clr     d4                      ; print
+000010E6  6000 FF44                 69              bra     secondline
+000010EA  43F9 00001244             70  bigger      lea     big,a1
+000010F0  4EB9 00001128             71              jsr     p_str
+000010F6  6000 FF34                 72              bra     secondline    
+000010FA                            73  
+000010FA                            74  
+000010FA  FFFF FFFF                 75  end    SIMHALT             ; halt simulator
+000010FE                            76      include 'io_util.x68'
+000010FE  48E7 8000                 77  P_PRMPT MOVEM.L D0,-(SP)    Preserve D0
+00001102  7012                      78      MOVEQ.L #18,D0  Set up prompt and read number into D1.L
+00001104  4E4F                      79      TRAP    #15
+00001106  4CDF 0001                 80      MOVEM.L (SP)+,D0    Restore D0
+0000110A  4E75                      81      RTS
+0000110C  48E7 8000                 82  P_PRMPT2    MOVEM.L D0,-(SP)    Preserve D0
+00001110  700E                      83      MOVEQ.L #14,D0  Set up prompt and read number into D1.L
+00001112  4E4F                      84      TRAP    #15
+00001114  4CDF 0001                 85      MOVEM.L (SP)+,D0    Restore D0
+00001118  4E75                      86      RTS
+0000111A  48E7 8000                 87  P_NUM   MOVEM.L D0,-(SP)    Preserve D0
+0000111E  7011                      88      MOVEQ   #17,D0  Set up to print D1.L without CR/LF
+00001120  4E4F                      89      TRAP    #15 Print the number
+00001122  4CDF 0001                 90      MOVEM.L (SP)+,D0    Restore D0
+00001126  4E75                      91      RTS
+00001128                            92      
+00001128  48E7 8000                 93  P_STR   MOVEM.L D0,-(SP)    Preserve D0
+0000112C  700D                      94      MOVEQ   #13,D0  Set up to print string at A1 with CR/LF
+0000112E  4E4F                      95      TRAP    #15 Print the string
+00001130  4CDF 0001                 96      MOVEM.L (SP)+,D0    Restore D0
+00001134  4E75                      97      RTS
+00001136  48E7 8000                 98  P_STR2  MOVEM.L D0,-(SP)    Preserve D0
+0000113A  700E                      99      MOVEQ   #14,D0  Set up to print string at A1 with CR/LF
+0000113C  4E4F                     100      TRAP    #15 Print the string
+0000113E  4CDF 0001                101      MOVEM.L (SP)+,D0    Restore D0
+00001142  4E75                     102      RTS
+00001144  48E7 0040                103  P_CRLF2 MOVEM.L A1,-(SP)    Preserve D0 and A1
+00001148  700D                     104      MOVEQ.L #13,D0  Set up print with CRLF
+0000114A  43F9 00001158            105      LEA NULL,A1 Set null string
+00001150  4E4F                     106      TRAP    #15
+00001152  4CDF 0200                107      MOVEM.L (SP)+,A1    Restore D0 and A1
+00001156  4E75                     108      RTS
+00001158                           109  
+00001158= 00                       110  NULL    DC.B    0   Empty string
+00001159                           111  
+0000115A  48E7 8040                112  dischar movem.l d0/a1,-(sp)
+0000115E  7006                     113          moveq.l #6,d0
+00001160  4E4F                     114          trap    #15
+00001162  4CDF 0201                115          movem.l (sp)+,d0/a1
+00001166  4E75                     116          rts
+00001168  48E7 8040                117  pmsg        movem.l d0/a1,-(sp)
+0000116C  700E                     118              moveq.l #14,d0
+0000116E  4E4F                     119              trap    #15
+00001170  4CDF 0201                120              movem.l (sp)+,d0/a1
+00001174  4E75                     121              rts    
+00001176  48E7 8040                122  readchar movem.l d0/a1,-(sp)
+0000117A  7005                     123          moveq.l #5,d0
+0000117C  4E4F                     124          trap    #15
+0000117E  4CDF 0201                125          movem.l (sp)+,d0/a1
+00001182  4E75                     126          rts
+00001184  7005                     127  readchar2 moveq.l   #5,d0
+00001186  4E4F                     128            trap      #15
+00001188  4E75                     129            rts
+0000118A  7006                     130  displaychar moveq   #6,d0
+0000118C  4E4F                     131              trap    #15
+0000118E  4E75                     132              rts
+00001190                           133            
+00001190  7002                     134  readstr moveq.l     #2,d0
+00001192  4E4F                     135            trap      #15
+00001194  4E75                     136            rts          
+00001196  7004                     137  readnum moveq.l   #4,d0
+00001198  4E4F                     138            trap      #15
+0000119A  4E75                     139            rts
+0000119C  7002                     140  msg2    moveq.l #2,d0
+0000119E  4E4F                     141          trap    #15
+000011A0  4E75                     142          rts  
+000011A2                           143          
+000011A2  700C                     144  echo    moveq.l #12,d0
+000011A4  4E4F                     145          trap    #15
+000011A6  4E75                     146          rts
+000011A8                           147  
+000011A8                           148  
+000011A8                           149  
+000011A8                           150  
+000011A8                           151  
+000011A8                           152  
+000011A8                           153  
+000011A8                           154  
+000011A8                           155  
+000011A8                           156  
+000011A8                           157  
+000011A8                           158  
+000011A8                           159  
+000011A8                           160  
+000011A8                           161  
+000011A8                           162  -------------------- end include --------------------
+000011A8                           163  * Put variables and constants here
+000011A8= 65 6E 74 65 72 20 ...    164  prmpt   dc.b    'enter in 1 of the 5 numbers between 1-255: ',0
+000011D4= 65 6E 74 65 72 20 ...    165  prmpt2  dc.b    'enter in 2 to use sum function or 1 to print list or 3 to end session: ',0
+0000121C= 68 6F 77 20 6D 61 ...    166  howmany dc.b    'how many elements would u like to add: ',0
+00001244= 65 78 63 65 65 64 ...    167  big     dc.b    'exceeds 255 try again: ',0
+0000125C= 20 69 20 73 61 69 ...    168  lol     dc.b    ' i said errrRAWRRRRRRR ',0
+00001274                           169  list    ds.b    5
+00001279= 20 61 6E 73 20 69 ...    170  ans     dc.b    ' ans is : ',0
+00001284                           171  newlist ds.b    5
+00001289= 2C 20 00                 172  comma   dc.b    ', ',0
+0000128C= 00                       173  blank   dc.b    '',0
+0000128D                           174  
+0000128D= 01                       175  add     dc.b    1
+0000128E                           176      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADD                 128D
+ADDTOLIST           1026
+ANS                 1279
+BIG                 1244
+BIGGER              10EA
+BLANK               128C
+CHECK               1042
+COMMA               1289
+DISCHAR             115A
+DISPLAYCHAR         118A
+ECHO                11A2
+END                 10FA
+ERROR               1092
+HOWMANY             121C
+LIST                1274
+LOL                 125C
+LOOP                1010
+LOOP3               1076
+LOOPYOLO            10C2
+MSG2                119C
+NEWLIST             1284
+NULL                1158
+PMSG                1168
+PRINTINGANS         10CA
+PRINTLIST           105E
+PRMPT               11A8
+PRMPT2              11D4
+P_CRLF2             1144
+P_NUM               111A
+P_PRMPT             10FE
+P_PRMPT2            110C
+P_STR               1128
+P_STR2              1136
+READCHAR            1176
+READCHAR2           1184
+READNUM             1196
+READSTR             1190
+SECONDLINE          102C
+START               1000
+TIMETOADD           10A6

@@ -1,0 +1,58 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/22/2016 8:10:04 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a_q_
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2015/month/day
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      
+00001000                             8  START:      org     $1000        ; first instruction of program
+00001000                             9  
+00001000  3039 00001034             10              move.w  num1,d0
+00001006  3239 00001036             11              move.w  num2,d1
+0000100C  3439 00001038             12              move.w  num3,d2
+00001012  3639 0000103A             13              move.w  num4,d3
+00001018                            14              
+00001018  D240                      15              add.w   d0,d1
+0000101A  33C1 0000103C             16              move.w  d1,result
+00001020                            17              
+00001020  D440                      18              add.w   d0,d2   
+00001022  33C2 0000103E             19              move.w  d2,result2
+00001028                            20              
+00001028  D640                      21              add.w   d0,d3
+0000102A  33C3 00001040             22              move.w  d3,result3
+00001030                            23              
+00001030  4E72 2700                 24              stop        #$2700
+00001034                            25  
+00001034                            26  * Put variables and constants here
+00001034                            27  
+00001034= 162D                      28  num1    dc.w        $162d
+00001036= E9D2                      29  num2    dc.w        $e9d2
+00001038= E9D4                      30  num3    dc.w        $e9d4
+0000103A= E9D3                      31  num4    dc.w        $e9d3
+0000103C                            32  
+0000103C                            33  result      ds.w    1
+0000103E                            34  result2     ds.w    1
+00001040                            35  result3     ds.w    1
+00001042                            36  
+00001042                            37  
+00001042                            38      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+NUM1                1034
+NUM2                1036
+NUM3                1038
+NUM4                103A
+RESULT              103C
+RESULT2             103E
+RESULT3             1040
+START               1000

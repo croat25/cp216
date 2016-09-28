@@ -1,0 +1,53 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/22/2016 8:11:23 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a3q3
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/month/day
+00000000                             5  * Description:q
+00000000                             6  
+00000000                             7  
+00000000                             8  
+00000000                             9  *************************************************************
+00000000                            10  * the count cannot be zero or more then 9 cause in the maunal it says
+00000000                            11  * it cant be anything other then 1-8 and it gives and error if u try
+00000000                            12  
+00000000                            13  *-----------------------------------------------------------
+00000000                            14      
+00000000                            15   
+00001000                            16  START:      org     $1000        ; first instruction of program
+00001000                            17  
+00001000  1039 00001012             18              move.b  num1,d0
+00001006                            19              
+00001006                            20              
+00001006  E418                      21              ror.b   #2,d0
+00001008  13C0 00001014             22              move.b  d0,res
+0000100E                            23              
+0000100E                            24  
+0000100E  4E72 2700                 25              stop        #$2700
+00001012                            26  
+00001012                            27  * Put variables and constants here
+00001012                            28  
+00001012= CC                        29  num1    dc.b    %11001100    
+00001013                            30  
+00001013                            31  
+00001013= 02                        32  pos1    dc.b    2
+00001014                            33  
+00001014                            34  
+00001014                            35  res     ds.b    1
+00001015                            36  
+00001015                            37      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+NUM1                1012
+POS1                1013
+RES                 1014
+START               1000

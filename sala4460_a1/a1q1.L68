@@ -1,0 +1,34 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 1/11/2016 6:56:38 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program    : Assignment #1 q1
+00000000                             3  * Written by : Dr. Nora Znotinas
+00000000                             4  * Description: subtract two numbers
+00000000                             5  * Input: num1, num2
+00000000                             6  * Output: answer
+00000000                             7  * Registers: D0, D1 - store input so num1/2 not trashed
+00000000                             8  *-----------------------------------------------------------
+00001000                             9  START   ORG     $1000
+00001000  2039 00001018             10          MOVE.L  num1,D0         ;get first value
+00001006  2239 0000101C             11          MOVE.L  num2,D1         ;get second value
+0000100C  9280                      12          SUB.L   D0,D1           ; subract the numbers
+0000100E  23C1 00001020             13          MOVE.L  D1,answer       ; and store result
+00001014  4E72 2700                 14          STOP    #$2700
+00001018= 12003425                  15  num1    DC.L    $12003425
+0000101C= 4512374A                  16  num2    DC.L    $4512374A
+00001020                            17  answer  DS.L    1
+00001024                            18          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ANSWER              1020
+NUM1                1018
+NUM2                101C
+START               1000

@@ -1,0 +1,42 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 1/29/2016 6:39:54 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :q1
+00000000                             3  * Written by :bruno salapic
+00000000                             4  * Date       :idk   
+00000000                             5  * Description:q1 yolo
+00000000                             6  *-----------------------------------------------------------
+00000000  =00E00010                  7  leds    equ $e00010             ; initiate stuff
+00000000  =00E00012                  8  switches    equ $e00012
+00000000                             9          
+00001000                            10  START:  ORG    $1000                ; first instruction of program
+00001000  1039 0000101E             11          move.b  patt,d0
+00001006  13C0 00E00010             12  top     move.b  d0,leds                 ;move patt to display in leds
+0000100C  E218                      13          ror.b   #1,d0
+0000100E  223C 003FFFFF             14          move.l  #$3fffff,d1
+00001014  5381                      15  loop    sub.l   #1,d1               ; rotate that sucker
+00001016  66FC                      16          bne     loop
+00001018                            17          
+00001018  60EC                      18          bra     top
+0000101A                            19  
+0000101A  FFFF FFFF                 20      SIMHALT             ; halt simulator
+0000101E                            21  
+0000101E                            22  * Put variables and constants here
+0000101E= 59                        23  patt    dc.b    %01011001
+0000101F                            24      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+LEDS                E00010
+LOOP                1014
+PATT                101E
+START               1000
+SWITCHES            E00012
+TOP                 1006
